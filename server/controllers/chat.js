@@ -61,7 +61,8 @@ export const getAllMessages = async function (req, res) {
 export const getUsersTobeConnection = async function (req, res) {
   try {
     const userId = req.user._id;
-
+    const page = req.params.page;
+    const limit = req.params.limit;
     // Find the current user and populate their rooms
     const currentUser = await User.findById(userId).populate("rooms").exec();
     if (!currentUser) {
@@ -77,12 +78,12 @@ export const getUsersTobeConnection = async function (req, res) {
       status: { $nin: ["Pending", "Rejected"] },
 
       rooms: { $nin: roomIds }, // Users not in any of the current user's rooms
-    }).exec();
+    })
+      .sort({ createdAt: 1 }) // Sort by the indexed field
+      .skip((page - 1) * limit) // Skip the appropriate number of documents
+      .limit(limit);
 
-    res.send({
-      count: usersWithoutCommonRooms.length,
-      usersWithoutCommonRooms,
-    });
+    res.send(usersWithoutCommonRooms);
   } catch (error) {
     console.error(error);
     throw error;
@@ -91,6 +92,8 @@ export const getUsersTobeConnection = async function (req, res) {
 export const getUsersConnections = async function (req, res) {
   try {
     const userId = req.user._id;
+    const page = req.params.page;
+    const limit = req.params.limit;
     // Find the user and populate their rooms
     const currentUser = await User.findById(userId).populate("rooms").exec();
     if (!currentUser) {
@@ -105,7 +108,10 @@ export const getUsersConnections = async function (req, res) {
       _id: { $ne: userId }, // Exclude the current user
       rooms: { $in: roomIds },
       // status: { $ne: 'pending' }
-    }).exec();
+    })
+      .sort({ createdAt: 1 }) // Sort by the indexed field
+      .skip((page - 1) * limit) // Skip the appropriate number of documents
+      .limit(limit);
 
     res.send(usersWithCommonRooms);
   } catch (error) {
@@ -132,7 +138,8 @@ export const getAllRoomByUserId = async function (req, res) {
 };
 
 export const createRoom = async function (req, res) {
-  const { user1, user2 } = req.params;
+  const user2 = req.user._id;
+  const { user1 } = req.params;
 
   try {
     const commonRooms = await Room.findOne({

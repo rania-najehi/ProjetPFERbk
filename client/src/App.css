@@ -8,3 +8,45 @@
   font-optical-sizing: auto;
   font-style: normal;
 }
+/* HTML: <div class="loader2"></div> */
+.loader2 {
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  transform: translate(50%, -50%);
+  display: inline-grid;
+  width: 80px;
+  aspect-ratio: 1;
+}
+.loader2:before,
+.loader2:after {
+  content: "";
+  grid-area: 1/1;
+  border-radius: 50%;
+  animation: l3-0 2s alternate infinite ease-in-out;
+}
+.loader2:before {
+  margin: 25%;
+  background: repeating-conic-gradient(#ff007b 0 60deg, #8436a1 0 120deg);
+  translate: 0 50%;
+  rotate: -150deg;
+}
+.loader2:after {
+  padding: 10%;
+  margin: -10%;
+  background: repeating-conic-gradient(#8436a1 0 30deg, #ff007b 0 60deg);
+  mask: linear-gradient(#0000 50%, #000 0) content-box exclude,
+    linear-gradient(#0000 50%, #000 0);
+  rotate: -75deg;
+  animation-name: l3-1;
+}
+@keyframes l3-0 {
+  to {
+    rotate: 150deg;
+  }
+}
+@keyframes l3-1 {
+  to {
+    rotate: 75deg;
+  }
+}

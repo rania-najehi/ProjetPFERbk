@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { LinkedIn, GitHub, Add } from "@mui/icons-material";
 
-const UserCard = ({ user }) => {
+const UserCard = ({ navigateContactToChat, user, connect, createRoom }) => {
   return (
     <Card
       sx={{
@@ -25,16 +25,18 @@ const UserCard = ({ user }) => {
       <Grid container spacing={2} alignItems="center">
         <Grid item xs={4}>
           <Avatar
-            src={user.avatar}
-            alt={user.name}
-            sx={{ width: 200, height: 200 }}
+            src={user.studentAvatar}
+            alt={user._id}
+            sx={{ width: 150, height: 150 }}
           />
         </Grid>
         <Grid item xs={8}>
           <CardContent>
-            <Typography variant="h5">{user.name}</Typography>
+            <Typography variant="h5">
+              {user.firstName} {user.lastName}
+            </Typography>
             <Typography variant="body1" color="textSecondary">
-              {user.job}
+              {user.genre}
             </Typography>
             <Typography variant="body1" color="textSecondary">
               {user.role}
@@ -49,8 +51,11 @@ const UserCard = ({ user }) => {
                 // color="primary"
                 sx={{
                   marginRight: 1,
-                  color: "#ff007b",
-                  "&:hover": { color: "#ff007b", background: "white" },
+                  color: user.role === "Student" ? "#ff007b" : "#8436a1",
+                  "&:hover": {
+                    color: user.role === "Student" ? "#ff007b" : "#8436a1",
+                    background: "white",
+                  },
                 }}
               >
                 <GitHub />
@@ -58,8 +63,11 @@ const UserCard = ({ user }) => {
               <IconButton
                 sx={{
                   marginRight: 1,
-                  color: "#ff007b",
-                  "&:hover": { color: "#ff007b", background: "white" },
+                  color: user.role === "Student" ? "#ff007b" : "#8436a1",
+                  "&:hover": {
+                    color: user.role === "Student" ? "#ff007b" : "#8436a1",
+                    background: "white",
+                  },
                 }}
                 href={user.linkedin}
                 target="_blank"
@@ -67,17 +75,40 @@ const UserCard = ({ user }) => {
                 <LinkedIn />
               </IconButton>
             </Box>
-            <Button
-              variant="contained"
-              startIcon={<Add sx={{ color: "white" }} />}
-              sx={{
-                marginTop: 2,
-                background: "#ff007b",
-                "&:hover": { color: "#ff007b", background: "white" },
-              }}
-            >
-              Connect
-            </Button>
+            {!connect && (
+              <Button
+                onClick={() => createRoom(user._id)}
+                variant="contained"
+                startIcon={<Add sx={{ color: "white" }} />}
+                sx={{
+                  marginTop: 2,
+                  background: user.role === "Student" ? "#ff007b" : "#8436a1",
+                  "&:hover": {
+                    color: user.role === "Student" ? "#ff007b" : "#8436a1",
+                    background: "white",
+                  },
+                }}
+              >
+                Connect
+              </Button>
+            )}
+            {connect && (
+              <Button
+                onClick={navigateContactToChat}
+                variant="contained"
+                startIcon={<Add sx={{ color: "white" }} />}
+                sx={{
+                  marginTop: 2,
+                  background: user.role === "Student" ? "#ff007b" : "#8436a1",
+                  "&:hover": {
+                    color: user.role === "Student" ? "#ff007b" : "#8436a1",
+                    background: "white",
+                  },
+                }}
+              >
+                contact
+              </Button>
+            )}
           </CardContent>
         </Grid>
       </Grid>

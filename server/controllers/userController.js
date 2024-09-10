@@ -84,7 +84,8 @@ export const updateStudentStatus = catchAsyncErrors(async (req, res, next) => {
   if (!student) {
     return next(new ErrorHandler("Étudiant non trouvé", 404));
   }
-
+  if (status === "Accepted" || status === "Rejected")
+    await sendEmail(student.email, status, student.name);
   res.status(200).json({
     success: true,
     student,
@@ -97,7 +98,7 @@ export const getAcceptedStudents = async (req, res) => {
       status: "Accepted",
       role: "Student",
     });
-
+    await sendEmail(student.email, "Accepted", student.name);
     res.status(200).json({
       success: true,
       count: acceptedStudents.length,
@@ -175,7 +176,11 @@ export const login = catchAsyncErrors(async (req, res, next) => {
   if (!user) {
     return next(new ErrorHandler("Mot De Passe Or Email Invalides.", 400));
   }
-
+  if (["Pending", "Rejected"].includes(user.status)) {
+    return next(
+      new ErrorHandler(`You are reject or no yet accepted by the admin`, 403)
+    );
+  }
   const isPasswordMatch = await user.comparePassword(password);
   if (!isPasswordMatch) {
     return next(new ErrorHandler("Mot De Passe Or Email Invalides!", 400));

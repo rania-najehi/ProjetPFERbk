@@ -15,10 +15,18 @@ import {
 } from "../middlewares/auth.js";
 import { upload } from "../middlewares/multer.js";
 router.post("/", upload.single("file"), addMessage);
-router.get("/connection", isStudentAuthenticated, getUsersConnections);
-router.get("/norelated", isStudentAuthenticated, getUsersTobeConnection);
+router.get(
+  "/connection/:page/:limit",
+  isStudentAuthenticated,
+  getUsersConnections
+);
+router.get(
+  "/norelated/:page/:limit",
+  isStudentAuthenticated,
+  getUsersTobeConnection
+);
 router.get("/:roomId", getAllMessages);
-router.post("/:user1/:user2", createRoom);
+router.post("/:user1/", isStudentAuthenticated, createRoom);
 router.get("/room/:userId", getAllRoomByUserId);
 
 router.delete("/:id", removeMessage);

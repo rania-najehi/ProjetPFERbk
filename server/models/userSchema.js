@@ -99,7 +99,11 @@ userSchema.methods.generateJsonWebToken = function () {
     expiresIn: process.env.JWT_EXPIRES,
   });
 };
+// Create an index on the createdAt field for efficient sorting
+userSchema.index({ createdAt: 1 });
 
+// Alternatively, you can create a compound index for pagination
+userSchema.index({ createdAt: 1, _id: 1 });
 export const User = mongoose.model("User", userSchema);
 const photos = [
   "http://localhost:4000/uploads/6d90f194-62e6-414a-8095-ec9348e109de.jpg",

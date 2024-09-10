@@ -1,29 +1,34 @@
-import React, { useState, useContext, useLayoutEffect, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import "./Navbar.css";
-import { redirect } from "react-router-dom";
+
 import { Link, useNavigate } from "react-router-dom";
+import { Menu, MenuItem, IconButton } from "@mui/material";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import LogoutIcon from "@mui/icons-material/Logout";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Context } from "../../main";
 import axios from "axios";
-import { toast } from "react-toastify";
 
 import logo from "../../images/rbk logo.png";
 
 const Navbar = () => {
   const [show, setShow] = useState(false);
   const { token, setToken } = useContext(Context);
+  const [anchorEl, setAnchorEl] = useState(null);
   const navigateTo = useNavigate();
+  console.log("anchorEl", anchorEl);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const handleLogout = async () => {
     localStorage.removeItem("token");
-    try {
-      const data = await axios.get(
-        "http://localhost:4000/api/v1/user/student/logout",
-        { withCredentials: true }
-      );
-      console.log("logout happend", data.data);
-    } catch (error) {
-      console.log(error);
-    }
+    handleClose();
+
     setToken(null);
     navigateTo("/login");
   };
@@ -31,7 +36,10 @@ const Navbar = () => {
   const goToLogin = () => {
     navigateTo("/login");
   };
-
+  const MoveToDashboard = () => {
+    navigateTo("/dashboard");
+    handleClose();
+  };
   return (
     <nav
       className="navbar"
@@ -78,9 +86,52 @@ const Navbar = () => {
       </div>
       <div className="hamburger" onClick={() => setShow(!show)}>
         {token ? (
-          <button className="loginBtn" onClick={handleLogout}>
-            Déconnexion
-          </button>
+          <div>
+            <IconButton
+              onClick={handleClick}
+              sx={{
+                color: "#fff",
+              }}
+              aria-controls="nav-menu"
+            >
+              <MoreVertIcon />
+            </IconButton>
+            <Menu
+              id="nav-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+              sx={{
+                padding: 2,
+                borderRadius: 2,
+              }}
+            >
+              <MenuItem
+                sx={{
+                  color: "#ff007b",
+                  padding: 2,
+                  borderRadius: 2,
+                }}
+                aria-haspopup="true"
+                onClick={MoveToDashboard}
+              >
+                <AccountCircleIcon style={{ marginRight: "10px" }} />
+                Profile
+              </MenuItem>
+              <MenuItem
+                onClick={handleLogout}
+                sx={{
+                  color: "#ff007b",
+                  padding: 2,
+                  borderRadius: 2,
+                }}
+              >
+                <LogoutIcon style={{ marginRight: "10px" }} />
+                Logout
+              </MenuItem>
+            </Menu>
+          </div>
         ) : (
           <button className="loginBtn" onClick={goToLogin}>
             Connexion{" "}

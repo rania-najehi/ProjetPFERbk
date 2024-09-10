@@ -1,54 +1,85 @@
-import React, { useState } from "react";
-import { Grid, TextField, Pagination, Box } from "@mui/material";
+import React, { useState, useContext, useEffect } from "react";
+import axios from "axios";
+import { Context } from "../main.jsx";
+import { Grid, TextField, Pagination, Box, Typography } from "@mui/material";
 import UserCard from "../Components/community/cards.jsx";
-const usersData = [
-  {
-    id: 1,
-    name: "John Doe",
-    job: "Software Engineer",
-    role: "Admin",
-    about:
-      "Experienced developer with a passion for creating innovative solutions.",
-    avatar: "https://i.pravatar.cc/300",
-    github: "https://github.com/johndoe",
-    linkedin: "https://linkedin.com/in/johndoe",
-  },
-  {
-    id: 1,
-    name: "John Doe",
-    job: "Software Engineer",
-    role: "Admin",
-    about:
-      "Experienced developer with a passion for creating innovative solutions.",
-    avatar: "https://i.pravatar.cc/300",
-    github: "https://github.com/johndoe",
-    linkedin: "https://linkedin.com/in/johndoe",
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    job: "Product Designer",
-    role: "Student",
-    about:
-      "Creative designer with an eye for detail and a love for user experience.",
-    avatar: "https://i.pravatar.cc/301",
-    github: "https://github.com/janesmith",
-    linkedin: "https://linkedin.com/in/janesmith",
-  },
-  // More users...
-];
+import { useNavigate } from "react-router-dom";
 
 const Community = () => {
+  const { token } = useContext(Context);
+  const [commonConn, setConn] = useState([]);
+  const [commonNoConn, setNoConn] = useState([]);
+
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const usersPerPage = 6;
-
-  const filteredUsers = usersData.filter(
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  const usersPerPage = 3;
+  useEffect(() => {
+    usersCommonRooms();
+    usersWithoutCommonRooms();
+  }, []);
+  const filteredUsers = commonConn.filter(
     (user) =>
-      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
+  const createRoom = async (userId) => {
+    try {
+      const { data } = await axios.post(
+        `http://localhost:4000/api/v1/chat/${userId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("data chat", data);
 
+      navigate("/dashboard/chat");
+    } catch (error) {
+      throw error;
+    }
+  };
+  const navigateContactToChat = () => {
+    navigate("/dashboard/chat");
+  };
+  const usersWithoutCommonRooms = async () => {
+    try {
+      const data = await axios.get(
+        "http://127.0.0.1:4000/api/v1/chat/norelated/0/0",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setNoConn(data.data);
+      setLoading(false);
+      console.log(data.data);
+    } catch (error) {
+      throw error;
+    }
+  };
+  const usersCommonRooms = async () => {
+    try {
+      const data = await axios.get(
+        "http://127.0.0.1:4000/api/v1/chat/connection/0/0",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setConn(data.data);
+      setLoading(false);
+
+      console.log("connection", data.data);
+    } catch (error) {
+      throw error;
+    }
+  };
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
@@ -57,11 +88,15 @@ const Community = () => {
     setCurrentPage(value);
   };
 
+  if (loading) {
+    return <div className="loader2"></div>;
+  }
   return (
     <Box
       sx={{
         p: 4,
         width: "100%",
+        gap: 4,
         display: "flex",
         // alignItems: "center",
         flexDirection: "column",
@@ -74,16 +109,41 @@ const Community = () => {
         sx={{ marginBottom: 3, width: "30%" }}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
+      <Typography variant="h3" component="h5">
+        Your Connections
+      </Typography>
       <Grid container spacing={3}>
-        {usersData.map((user) => (
+        {commonConn.map((user) => (
           <Grid item xs={12} sm={6} md={4} key={user.id}>
-            <UserCard user={user} />
+            <UserCard
+              createRoom={createRoom}
+              navigateContactToChat={navigateContactToChat}
+              user={user}
+              connect={true}
+              key={user._id}
+            />
+          </Grid>
+        ))}
+      </Grid>
+      <Typography variant="h3" component="h5">
+        Community to connect
+      </Typography>
+      <Grid container spacing={3}>
+        {commonNoConn.map((user) => (
+          <Grid item xs={12} sm={6} md={4} key={user.id}>
+            <UserCard
+              createRoom={createRoom}
+              navigateContactToChat={navigateContactToChat}
+              user={user}
+              connect={false}
+              key={user._id}
+            />
           </Grid>
         ))}
       </Grid>
       <Box sx={{ display: "flex", justifyContent: "center", marginTop: 4 }}>
         <Pagination
-          count={Math.ceil(usersData.length / 4)}
+          count={Math.ceil(commonConn.length / usersPerPage)}
           page={currentPage}
           onChange={handleChangePage}
           color="primary"

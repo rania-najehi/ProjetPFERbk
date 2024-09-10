@@ -25,6 +25,7 @@ import JobOffer from "./Pages/JobOffer.jsx";
 import Footer from "./Components/Footer/Footer.jsx";
 import Scroller from "./Pages/Scoller.jsx";
 import Chat from "./Pages/chat.jsx";
+import Event from "./Pages/Events.jsx";
 import "./App.css";
 import CvGenerator from "./Pages/CvGenerator.jsx";
 const App = () => {
@@ -38,6 +39,8 @@ const App = () => {
           <Route path="/dashboard" element={<DashboardStudent />}>
             <Route index element={<MessageStudentPage />} />
             <Route path="/dashboard/chat" element={<Chat />} />
+            <Route path="/dashboard/event" element={<Event />} />
+
             <Route path="/dashboard/cv" element={<CvGenerator />} />
             <Route path="/dashboard/preview" element={<StudentPreview />} />
             <Route path="/dashboard/createCv" element={<CreateCv />} />

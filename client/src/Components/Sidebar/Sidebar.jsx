@@ -5,6 +5,11 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { TbLayoutSidebarLeftCollapse } from "react-icons/tb";
 import { TbLayoutSidebarRightCollapse } from "react-icons/tb";
+import { AiOutlineUsergroupAdd } from "react-icons/ai";
+
+import { AiFillWechat } from "react-icons/ai";
+
+import { AiOutlineFilePdf } from "react-icons/ai";
 import { TiHome } from "react-icons/ti";
 import { RiLogoutBoxFill } from "react-icons/ri";
 import { AiFillMessage } from "react-icons/ai";
@@ -50,7 +55,7 @@ const SideBar = () => {
   };
 
   const gotoAddNewAdmin = () => {
-    navigateTo("/admin/addnew");
+    navigateTo("/dashboard/community");
     setCollapsed(true);
   };
 
@@ -75,43 +80,43 @@ const SideBar = () => {
             {collapsed ? (
               <TbLayoutSidebarRightCollapse
                 onClick={() => setCollapsed(!collapsed)}
-                size={50}
+                size={30}
               />
             ) : (
               <TbLayoutSidebarLeftCollapse
                 onClick={() => setCollapsed(!collapsed)}
-                size={50}
+                size={30}
               />
             )}
           </div>
 
           <div className="link-item" onClick={gotoHomePage}>
-            <TiHome size={50} />
+            <TiHome size={30} />
             {!collapsed && <span>Home</span>}
           </div>
           <div className="link-item" onClick={gotoStudentsPage}>
-            <FaUserGraduate size={50} />
-            {!collapsed && <span>Students</span>}
+            <AiOutlineFilePdf size={30} />
+            {!collapsed && <span>Resume</span>}
           </div>
           <div className="link-item" onClick={gotoAddNewAdmin}>
-            <MdAddModerator size={50} />
-            {!collapsed && <span>Add Admin</span>}
+            <AiOutlineUsergroupAdd size={30} />
+            {!collapsed && <span>Connect</span>}
           </div>
           <div className="link-item" onClick={gotoJobPage}>
-            <MdAddModerator size={50} />
+            <MdAddModerator size={30} />
             {!collapsed && <span>Job Offer</span>}
           </div>
 
           <div className="link-item" onClick={gotoMessagesPage}>
-            <AiFillMessage size={50} />
+            <AiFillWechat size={30} />
             {!collapsed && <span>Messages</span>}
           </div>
           <div className="link-item" onClick={gotoEventsPage}>
-            <FaCalendarAlt size={50} />
+            <FaCalendarAlt size={30} />
             {!collapsed && <span>Events</span>}
           </div>
           <div className="link-item" onClick={handleLogout}>
-            <RiLogoutBoxFill size={50} />
+            <RiLogoutBoxFill size={30} />
             {!collapsed && <span>Logout</span>}
           </div>
         </div>
