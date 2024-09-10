@@ -1,0 +1,94 @@
+.events-page {
+  max-width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.events-navbar {
+  background-color: white; /* White background */
+  border: 2px solid #007bff; /* Blue border */
+  padding: 10px 20px;
+  margin-bottom: 20px;
+  border-radius: 8px; /* Optional: Rounded corners */
+}
+
+.events-navbar ul {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.events-navbar ul li {
+  margin: 0 10px;
+}
+
+.events-navbar a {
+  color: #007bff; /* Blue text for links */
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.events-navbar a:hover {
+  text-decoration: underline; /* Optional: Underline on hover */
+}
+
+.events-navbar button {
+  background-color: #e83e8c; /* Pink */
+  color: white; /* White text */
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.events-navbar button:hover {
+  background-color: #d63384; /* Darker pink on hover */
+}
+
+.events-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px; 
+  padding: 10px; 
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+
+.event-card {
+  background-color: #f8f9fa; /* Light gray */
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.event-card h3 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.event-card p {
+  color: #666;
+}
+
+.event-card img {
+  max-width: 100%;
+  margin-top: 10px;
+}
+
+.event-card button {
+  background-color: #dc3545; /* Dark pink */
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.event-card button:hover {
+  background-color: #c82333; /* Lighter dark pink on hover */
+}

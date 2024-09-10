@@ -1,7 +1,7 @@
 import React, { useState, createContext, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
-
+import { SocketProvider } from "./context/socket.jsx";
 export const Context = createContext();
 const AppWrapper = () => {
   const [token, setToken] = useState(localStorage.getItem("token") || null);
@@ -15,7 +15,9 @@ const AppWrapper = () => {
   }, [token]);
   return (
     <Context.Provider value={{ token, setToken }}>
-      <App />
+      <SocketProvider>
+        <App />
+      </SocketProvider>
     </Context.Provider>
   );
 };

@@ -6,9 +6,9 @@
   overflow-x: hidden;
   font-family: "Montserrat", sans-serif;
 }
-body {
+/* body {
   background: #3939d9f2;
-}
+} */
 .container {
   padding: 0 100px;
 }
@@ -41,7 +41,7 @@ body {
     width: 100%;
   }
 }
-.form-title{
+.form-title {
   font-size: 1.75rem;
   color: #111;
   margin-bottom: 30px;
@@ -248,15 +248,15 @@ body {
   width: 100%;
   font-weight: 600;
 }
-.dashboard table td svg{
+.dashboard table td svg {
   display: flex;
   margin: 0 auto;
 }
-.dashboard table td .green{
+.dashboard table td .green {
   font-size: 20px;
   color: #16a34a;
 }
-.dashboard table td .red{
+.dashboard table td .red {
   font-size: 20px;
   color: #dc2626;
 }
@@ -495,13 +495,6 @@ body {
   font-weight: 500;
 }
 
-
-
-
-
-
-
-
 input[type="date"]:before {
   content: attr(placeholder);
   color: #444;
@@ -513,14 +506,21 @@ input[type="time"]:before {
   margin-right: 0.5em;
 }
 
-
 .gradient-custom-2 {
   /* fallback for old browsers */
   background: #fbc2eb;
-  
+
   /* Chrome 10-25, Safari 5.1-6 */
-  background: -webkit-linear-gradient(to right, rgba(251, 194, 235, 1), rgba(166, 193, 238, 1));
-  
+  background: -webkit-linear-gradient(
+    to right,
+    rgba(251, 194, 235, 1),
+    rgba(166, 193, 238, 1)
+  );
+
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  background: linear-gradient(to right, rgba(251, 194, 235, 1), rgba(166, 193, 238, 1))
-  }
+  background: linear-gradient(
+    to right,
+    rgba(251, 194, 235, 1),
+    rgba(166, 193, 238, 1)
+  );
+}

@@ -341,3 +341,20 @@ export const logoutStudent = catchAsyncErrors(async (req, res, next) => {
       message: "L'utisateur est déconnecté avec succès. ",
     });
 });
+export const updateUserCv = catchAsyncErrors(async (req, res, next) => {
+  let studentAvatar;
+  console.log();
+  if (req.file) {
+    studentAvatar = req.file.filename;
+  }
+  const update = await User.updateOne(
+    { _id: req.user._id },
+    { ...req.body, studentAvatar }
+  );
+
+  res.status(200).json({
+    success: true,
+    message: "Informations mises à jour avec succès",
+    update,
+  });
+});

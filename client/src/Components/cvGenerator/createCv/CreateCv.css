@@ -1,0 +1,97 @@
+#resume_cv {
+  font-family: "Montserrat", sans-serif;
+  color: #333;
+  max-width: 900px;
+  margin: 2rem auto;
+  background: #fff;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  border-radius: 8px;
+}
+
+.header_cv {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+
+.header_cv img {
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  margin-right: 2rem;
+}
+
+.info_cv {
+  flex: 1;
+}
+
+.info_cv h1 {
+  margin: 0;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #0073e6;
+}
+
+.info_cv h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: #777;
+}
+
+.contacts_cv {
+  margin-top: 1rem;
+}
+
+.contacts_cv span {
+  display: inline-block;
+  margin-right: 1rem;
+  color: #333;
+}
+
+.contacts_cv span i {
+  margin-right: 0.5rem;
+  color: #0073e6;
+}
+
+.section_cv {
+  margin-bottom: 2rem;
+}
+
+.section_cv h3 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #0073e6;
+  display: inline-block;
+  color: #0073e6;
+}
+
+.item_cv {
+  margin-bottom: 1rem;
+}
+
+.item_cv h4 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.item_cv p {
+  margin: 0.5rem 0 0 0;
+  color: #555;
+}
+
+.skills_cv .skill_cv {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+}
+
+.skills_cv .skill_cv span {
+  font-weight: 700;
+}

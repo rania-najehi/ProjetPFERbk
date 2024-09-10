@@ -15,6 +15,15 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     localStorage.removeItem("token");
+    try {
+      const data = await axios.get(
+        "http://localhost:4000/api/v1/user/student/logout",
+        { withCredentials: true }
+      );
+      console.log("logout happend", data.data);
+    } catch (error) {
+      console.log(error);
+    }
     setToken(null);
     navigateTo("/login");
   };
@@ -26,12 +35,14 @@ const Navbar = () => {
   return (
     <nav
       className="navbar"
-      style={{
-        background: "#ff007b",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-      }}
+      style={
+        {
+          // background: "#ff007b",
+          // display: "flex",
+          // alignItems: "center",
+          // justifyContent: "space-between",
+        }
+      }
     >
       <div className="logo">
         <img

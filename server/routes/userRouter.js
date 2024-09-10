@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  updateUserCv,
   studentRegister,
   getAllStudent,
   getUserDetails,
@@ -25,6 +26,13 @@ import { upload } from "../middlewares/multer.js";
 const router = express.Router();
 router.post("/student/register", upload.single("file"), studentRegister);
 router.put("/update/:id", updateStudent);
+router.put(
+  "/updateCv",
+  isStudentAuthenticated,
+  upload.single("file"),
+  updateUserCv
+);
+
 router.post("/login", login);
 // Route pour la connexion de l'administrateur
 router.route('/admin/login').post(adminLogin);

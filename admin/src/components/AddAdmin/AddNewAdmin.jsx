@@ -9,7 +9,7 @@ import axios from "axios";
 import "./aa.css";
 
 const AddNewAdmin = () => {
-  const { isAuthenticated, setIsAuthenticated } = useContext(Context);
+  const { token } = useContext(Context);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -25,13 +25,13 @@ const AddNewAdmin = () => {
           "http://127.0.0.1:4000/api/v1/user/admin/addNew",
           { firstName, lastName, email, phone, genre, password },
           {
-            withCredentials: true,
-            headers: { "Content-Type": "application/json" },
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           }
         )
         .then((res) => {
           toast.success(res.data.message);
-          setIsAuthenticated(true);
           navigateTo("/");
           setFirstName("");
           setLastName("");

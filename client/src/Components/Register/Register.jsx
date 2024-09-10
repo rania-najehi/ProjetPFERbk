@@ -1,10 +1,11 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Context } from "../../main";
 import "./Register.css";
-
+import { sendEmail } from "../../helpers/emailjs";
+import { GiMailShirt } from "react-icons/gi";
 const Register = () => {
   const { token, setToken } = useContext(Context);
   const [firstName, setFirstName] = useState("");
@@ -17,6 +18,7 @@ const Register = () => {
   const [birthdate, setBirthdate] = useState("");
   const [studentAvatar, setStudentAvatar] = useState(null);
   const navigateTo = useNavigate();
+  const form = useRef(null);
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -52,7 +54,17 @@ const Register = () => {
 
       // Redirection vers la page de login après un enregistrement réussi
       navigateTo("/login");
-
+      try {
+        const messageInput = form.current.querySelector(
+          'input[name="message"]'
+        );
+        if (messageInput) {
+          messageInput.value = "amine amdouni";
+        }
+        sendEmail(form.current);
+      } catch (error) {
+        console.log(error);
+      }
       // Réinitialisation des champs du formulaire
       setFirstName("");
       setLastName("");
@@ -84,11 +96,12 @@ const Register = () => {
     <div className="centered-component">
       <div className="form-componentt">
         <h2>S'inscrire</h2>
-        <form onSubmit={handleRegister}>
+        <form onSubmit={handleRegister} ref={form}>
           <div>
             <input
               type="text"
               placeholder="Nom"
+              name="name"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
             />
@@ -100,12 +113,14 @@ const Register = () => {
             />
             <input
               type="email"
+              name="from_name"
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
             <input
               type="tel"
+              name="message"
               placeholder="Num de Téléphone"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}

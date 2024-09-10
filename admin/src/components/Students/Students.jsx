@@ -1,22 +1,27 @@
-import React, { useEffect, useContext, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useContext, useState } from "react";
+import axios from "axios";
 import { Navigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Context } from '../../main'; 
+import { Context } from "../../main";
 
 const Students = () => {
   const [students, setStudents] = useState([]);
-  const { isAuthenticated } = useContext(Context); 
+  const { token } = useContext(Context);
 
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        console.log("Fetching students..."); 
-        const { data } = await axios.get("http://127.0.0.1:4000/api/v1/user/student/getStudent", {
-          withCredentials: true,
-        });
-        console.log("Data fetched:", data); 
-        setStudents(data.student); 
+        console.log("Fetching students...");
+        const { data } = await axios.get(
+          "http://127.0.0.1:4000/api/v1/user/student/getStudent",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log("Data fetched:", data);
+        setStudents(data.student);
       } catch (error) {
         console.error("Error fetching students:", error);
         toast.error(error.response?.data?.message || "Something went wrong");
@@ -25,7 +30,7 @@ const Students = () => {
     fetchStudents();
   }, [setStudents]);
 
-  if (!isAuthenticated) {
+  if (!token) {
     return <Navigate to="/login" />;
   }
 

@@ -1,87 +1,123 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../../main";
-import { TiHome } from "react-icons/ti";
-import { RiLogoutBoxFill } from "react-icons/ri";
-import { AiFillMessage } from "react-icons/ai";
-import { GiHamburgerMenu } from "react-icons/gi";
-import { PiStudentBold } from "react-icons/pi";
-import { FaFilePdf } from "react-icons/fa";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import "./Sidebar.css";
+import { TbLayoutSidebarLeftCollapse } from "react-icons/tb";
+import { TbLayoutSidebarRightCollapse } from "react-icons/tb";
+import { TiHome } from "react-icons/ti";
+import { RiLogoutBoxFill } from "react-icons/ri";
+import { AiFillMessage } from "react-icons/ai";
+import { MdAddModerator } from "react-icons/md";
+import { FaBriefcase, FaUserGraduate, FaCalendarAlt } from "react-icons/fa"; // Importing FaCalendarAlt for Events
 
-const Sidebar = () => {
-  const [show, setShow] = useState(false);
-  const { isAuthenticated, user, setIsAuthenticated } = useContext(Context);
+import "./index.css";
+
+const SideBar = () => {
+  const [collapsed, setCollapsed] = useState(true);
+  const { token, setToken } = useContext(Context);
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    await axios
-      .get("http://127.0.0.1:4000/api/v1/user/student/logout", {
-        withCredentials: true,
-      })
-      .then((res) => {
-        toast.success(res.data.message);
-        setIsAuthenticated(false);
-        navigate("/login");
-      })
-      .catch((err) => {
-        toast.error(err.response.data.message);
+    try {
+      await axios.get("http://127.0.0.1:4000/api/v1/user/admin/logout", {
+        headers: { Authorization: `Bearer ${token}` },
       });
+      toast.success("Logged out successfully.");
+      localStorage.removeItem("token");
+      setToken(null);
+      navigate("/login");
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
   };
+
+  const navigateTo = useNavigate();
 
   const gotoHomePage = () => {
-    navigate("/dashboard");
-    setShow(false);
+    navigateTo("/");
+    setCollapsed(!collapsed);
   };
 
-  const gitfCourses = () => {
-    navigate("/giftCourses");
-    setShow(false);
+  const gotoStudentsPage = () => {
+    navigateTo("/dashboard/cv");
+    setCollapsed(true);
   };
 
   const gotoMessagesPage = () => {
-    navigate("/dashboard/chat");
-    setShow(false);
+    navigateTo("/dashboard/chat");
+    setCollapsed(true);
   };
 
-  const gotTojobOffer = () => {
-    navigate("/dashboard/jobOffer");
-    setShow(false);
+  const gotoAddNewAdmin = () => {
+    navigateTo("/admin/addnew");
+    setCollapsed(true);
+  };
+
+  const gotoJobPage = () => {
+    navigateTo("/job");
+    setCollapsed(true);
+  };
+
+  const gotoEventsPage = () => {
+    navigateTo("/dashboard/community");
+    setCollapsed(true);
   };
 
   return (
     <>
       <nav
-        // style={ ? { display: "none" } : { display: "flex" }}
-        className={show ? "show SibeBar" : "SibeBar"}
+        style={!token ? { display: "none" } : { display: "flex" }}
+        className={`SideBar ${collapsed ? "collapsed" : ""}`}
       >
-        <div className="profile">
-          <img src={user?.avatar || "/default-avatar.png"} alt="avatar" />
-          <div className="profile-details">
-            <h4>{user && `${user.firstName} ${user.lastName}`}</h4>
-            <button onClick={() => navigate(`/updateProfile/${user._id}`)}>
-              Edit Profile
-            </button>
+        <div className="links">
+          <div className="link-item">
+            {collapsed ? (
+              <TbLayoutSidebarRightCollapse
+                onClick={() => setCollapsed(!collapsed)}
+                size={50}
+              />
+            ) : (
+              <TbLayoutSidebarLeftCollapse
+                onClick={() => setCollapsed(!collapsed)}
+                size={50}
+              />
+            )}
+          </div>
+
+          <div className="link-item" onClick={gotoHomePage}>
+            <TiHome size={50} />
+            {!collapsed && <span>Home</span>}
+          </div>
+          <div className="link-item" onClick={gotoStudentsPage}>
+            <FaUserGraduate size={50} />
+            {!collapsed && <span>Students</span>}
+          </div>
+          <div className="link-item" onClick={gotoAddNewAdmin}>
+            <MdAddModerator size={50} />
+            {!collapsed && <span>Add Admin</span>}
+          </div>
+          <div className="link-item" onClick={gotoJobPage}>
+            <MdAddModerator size={50} />
+            {!collapsed && <span>Job Offer</span>}
+          </div>
+
+          <div className="link-item" onClick={gotoMessagesPage}>
+            <AiFillMessage size={50} />
+            {!collapsed && <span>Messages</span>}
+          </div>
+          <div className="link-item" onClick={gotoEventsPage}>
+            <FaCalendarAlt size={50} />
+            {!collapsed && <span>Events</span>}
+          </div>
+          <div className="link-item" onClick={handleLogout}>
+            <RiLogoutBoxFill size={50} />
+            {!collapsed && <span>Logout</span>}
           </div>
         </div>
-        <div className="links">
-          <TiHome onClick={gotoHomePage} />
-          <PiStudentBold onClick={gitfCourses} />
-          <AiFillMessage onClick={gotoMessagesPage} />
-          <FaFilePdf onClick={gotTojobOffer} />
-          <RiLogoutBoxFill onClick={handleLogout} />
-        </div>
       </nav>
-      <div
-        className="wrapper"
-        style={!isAuthenticated ? { display: "none" } : { display: "flex" }}
-      >
-        <GiHamburgerMenu className="hamburger" onClick={() => setShow(!show)} />
-      </div>
     </>
   );
 };
 
-export default Sidebar;
+export default SideBar;

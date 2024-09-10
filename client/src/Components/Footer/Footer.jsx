@@ -42,18 +42,24 @@ const Footer = () => {
   return (
     <footer>
       <div className="contentt">
-        <div>
+        <div className="content_section">
           <img src={logo} alt="logo" className="logo-img" />
         </div>
-        <div>
-          <h4 className="footer-title">Services</h4>
+        <div className="content_section">
+          <h4 className="-title">Services</h4>
           <ul style={{ display: "flex", flexDirection: "column" }}>
-            <Link className="footer-link" to={"/"}>Accueil</Link>
-            <Link className="footer-link" to={"/appointment"}>Rendez-vous</Link>
-            <Link className="footer-link" to={"/about"}>À propos</Link>
+            <Link className="footer-link" to={"/"}>
+              Accueil
+            </Link>
+            <Link className="footer-link" to={"/appointment"}>
+              Rendez-vous
+            </Link>
+            <Link className="footer-link" to={"/about"}>
+              À propos
+            </Link>
           </ul>
         </div>
-        <div>
+        <div className="content_section">
           <h4 className="footer-title">Heures de travail</h4>
           <ul className="list-time">
             {hours.map((element) => (
@@ -64,7 +70,7 @@ const Footer = () => {
             ))}
           </ul>
         </div>
-        <div>
+        <div className="content_section">
           <h4 className="footer-title">Contact</h4>
           <div className="elem">
             <FaPhone />
@@ -77,12 +83,15 @@ const Footer = () => {
           <div className="elem">
             <FaLocationArrow />
             <span>B24, Technopark Elghazela ariana, 2088, Tunisie</span>
-            <a href="https://www.google.com/maps/place/ReBootKamp+(RBK+Tunis)/@36.8943529,10.1842139,17z/data=!4m14!1m7!3m6!1s0x12e2cb32a574f131:0x736d6f5853a1bd2e!2sReBootKamp+(RBK+Tunis)!8m2!3d36.8943486!4d10.1867888!16s%2Fg%2F11hz6lg210!3m5!1s0x12e2cb32a574f131:0x736d6f5853a1bd2e!8m2!3d36.8943486!4d10.1867888!16s%2Fg%2F11hz6lg210?entry=ttu" target="_blank" rel="noopener noreferrer">
+            <a
+              href="https://www.google.com/maps/place/ReBootKamp+(RBK+Tunis)/@36.8943529,10.1842139,17z/data=!4m14!1m7!3m6!1s0x12e2cb32a574f131:0x736d6f5853a1bd2e!2sReBootKamp+(RBK+Tunis)!8m2!3d36.8943486!4d10.1867888!16s%2Fg%2F11hz6lg210!3m5!1s0x12e2cb32a574f131:0x736d6f5853a1bd2e!8m2!3d36.8943486!4d10.1867888!16s%2Fg%2F11hz6lg210?entry=ttu"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <FaMapMarkerAlt className="map-icon" />
             </a>
           </div>
         </div>
-     
       </div>
     </footer>
   );

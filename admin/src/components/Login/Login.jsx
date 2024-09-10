@@ -7,7 +7,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const Login = () => {
-  const { isAuthenticated, setIsAuthenticated } = useContext(Context);
+  const { token, setToken } = useContext(Context);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -17,23 +17,25 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
     try {
       await axios
-        .post(
-          "http://127.0.0.1:4000/api/v1/user/login/",
-          { email, password, confirmPassword, role: "Admin" },
-          {
-            withCredentials: true,
-            headers: { "Content-Type": "application/json" },
-          }
-        )
+        .post("http://127.0.0.1:4000/api/v1/user/login/", {
+          email,
+          password,
+          confirmPassword,
+          role: "Admin",
+        })
         .then((res) => {
-          toast.success(res.data.message);
-          setIsAuthenticated(true);
+          setToken(res.data.token);
+
           navigateTo("/");
+
           setEmail("");
           setPassword("");
           setConfirmPassword("");
+          toast.success(res.data.message);
+          console.log(res.data);
         });
     } catch (error) {
       toast.error(error.response.data.message);

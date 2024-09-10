@@ -1,10 +1,14 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { Context } from "../../main.jsx";
+
 import { toast } from "react-toastify";
 import "./messageForm.css";
 import image from "./image.jpeg";
 
 const MessageForm = () => {
+  const { token } = useContext(Context);
+
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -19,8 +23,11 @@ const MessageForm = () => {
           "http://127.0.0.1:4000/api/v1/message/send",
           { firstName, lastName, email, phone, message },
           {
-            withCredentials: true,
-            headers: { "Content-Type": "application/json" },
+            // withCredentials: true,
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
           }
         )
         .then((res) => {

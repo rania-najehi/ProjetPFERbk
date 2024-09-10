@@ -7,14 +7,14 @@ const forbiddenTimes = {
   1: ["10:00", "14:00"], // Lundi
   2: ["10:00", "14:00"], // Mardi
   3: ["10:00", "14:00"], // Mercredi
-  4: ["10:00", "14:00"]  // Jeudi
+  4: ["10:00", "14:00"], // Jeudi
 };
 
 const isForbiddenTime = (appointmentDate) => {
   const date = new Date(appointmentDate);
   const day = date.getUTCDay();
-  const time = date.toISOString().split('T')[1].substring(0, 5);
-  
+  const time = date.toISOString().split("T")[1].substring(0, 5);
+
   return forbiddenTimes[day] && forbiddenTimes[day].includes(time);
 };
 
@@ -25,27 +25,43 @@ export const postAppointment = catchAsyncErrors(async (req, res, next) => {
     email,
     address,
     phone,
-    levelEnglish,
+    level,
     genre,
     appointment_date,
-    hasVisited
+    hasVisited,
   } = req.body;
 
-  if (!firstName || !lastName || !email || !address || !phone || !genre || !appointment_date || !levelEnglish) {
+  if (
+    !firstName ||
+    !lastName ||
+    !email ||
+    !address ||
+    !phone ||
+    !genre ||
+    !appointment_date ||
+    !level
+  ) {
     return next(new ErrorHandler("Veuillez remplir tout les champs SVP!", 400));
   }
 
   // Vérifier si la date et l'heure du rendez-vous sont interdites
   if (isForbiddenTime(appointment_date)) {
-    return next(new ErrorHandler("Rendez-vous non autorisé à cette date et heure!", 400));
+    return next(
+      new ErrorHandler("Rendez-vous non autorisé à cette date et heure!", 400)
+    );
   }
 
   const studentId = req.user._id;
 
   // Vérifier si l'utilisateur a déjà un rendez-vous à la même date
-  const existingAppointment = await Appointment.findOne({ studentId, appointment_date });
+  const existingAppointment = await Appointment.findOne({
+    studentId,
+    appointment_date,
+  });
   if (existingAppointment) {
-    return next(new ErrorHandler("Vous avez déjà un rendez-vous ce jour-là!", 400));
+    return next(
+      new ErrorHandler("Vous avez déjà un rendez-vous ce jour-là!", 400)
+    );
   }
 
   const appointment = await Appointment.create({
@@ -55,25 +71,27 @@ export const postAppointment = catchAsyncErrors(async (req, res, next) => {
     address,
     phone,
     genre,
-    levelEnglish,
+    levelEnglish: level,
     appointment_date,
     hasVisited,
-    studentId
+    studentId,
   });
   res.status(200).json({
     success: true,
     message: "Rendez-Vous a été envoyé avec succès!",
-    appointment
+    appointment,
   });
 });
 
 export const getDisabledDates = catchAsyncErrors(async (req, res, next) => {
   const appointments = await Appointment.find();
-  const disabledDates = appointments.map(app => app.appointment_date.toISOString().split('T')[0]);
+  const disabledDates = appointments.map(
+    (app) => app.appointment_date.toISOString().split("T")[0]
+  );
 
   res.status(200).json({
     success: true,
-    disabledDates
+    disabledDates,
   });
 });
 
@@ -81,7 +99,7 @@ export const getAllAppointment = catchAsyncErrors(async (req, res, next) => {
   const allAppointment = await Appointment.find();
   res.status(200).json({
     success: true,
-    allAppointment
+    allAppointment,
   });
 });
 
@@ -94,7 +112,7 @@ export const updateAppointment = catchAsyncErrors(async (req, res, next) => {
   appointment = await Appointment.findByIdAndUpdate(id, req.body, {
     new: true,
     runValidators: true,
-    useFindAndModify: false
+    useFindAndModify: false,
   });
   res.status(200).json({
     success: true,

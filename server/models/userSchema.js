@@ -66,9 +66,22 @@ const userSchema = new mongoose.Schema({
   studentAvatar: {
     type: String,
     required: true,
+    default: `http://localhost:4000/uploads/6d90f194-62e6-414a-8095-ec9348e109de.jpg`,
   },
 
   rooms: [{ type: ObjectId, ref: "Room" }],
+  description: {
+    type: String,
+  },
+  github: {
+    type: String,
+  },
+  linkedin: {
+    type: String,
+  },
+  about: {
+    type: String,
+  },
 });
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
@@ -88,3 +101,33 @@ userSchema.methods.generateJsonWebToken = function () {
 };
 
 export const User = mongoose.model("User", userSchema);
+const photos = [
+  "http://localhost:4000/uploads/6d90f194-62e6-414a-8095-ec9348e109de.jpg",
+  "http://localhost:4000/uploads/a2c7690e-ee45-4286-b04c-21c03bac2a9b.jpg",
+  // Add more photo URLs as needed
+];
+
+const getRandomPhoto = (photos) => {
+  const randomIndex = Math.floor(Math.random() * photos.length);
+  return photos[randomIndex];
+};
+
+// const updateUsersWithRandomPhotos = async () => {
+//   try {
+//     const users = await User.find();
+//     const updatePromises = users.map((user) => {
+//       const randomPhoto = getRandomPhoto(photos);
+//       return User.updateOne({ _id: user._id }, { studentAvatar: randomPhoto });
+//     });
+
+//     await Promise.all(updatePromises);
+
+//     console.log("All users updated with random photos");
+//   } catch (error) {
+//     console.error("Error updating users:", error);
+//   } finally {
+//     mongoose.connection.close();
+//   }
+// };
+
+// updateUsersWithRandomPhotos();

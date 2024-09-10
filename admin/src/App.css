@@ -338,7 +338,7 @@ body {
   }
 }
 
-.SibeBar {
+/* .SibeBar {
   position: fixed;
   width: 120px;
   background: #e84a99;
@@ -375,7 +375,7 @@ body {
 }
 .wrapper .hamburger {
   display: none;
-}
+} */
 
 @media (max-width: 1208px) {
   .SibeBar {

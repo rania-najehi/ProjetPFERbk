@@ -1,15 +1,28 @@
 import React from "react";
 
-const ChatList = ({ chats, selectChat }) => {
+const ChatList = ({ rooms, selectChat, user, selectedChatId }) => {
   return (
     <aside className="aside_chat">
+      {console.log("rooomqqqqq", rooms)}
       <ul id="chat-list">
-        {chats.map((chat) => (
-          <li key={chat.id} onClick={() => selectChat(chat.id)}>
-            <img className="avatar" src={chat.avatar} alt={chat.username} />
-            <p className="username">{chat.username}</p>
-          </li>
-        ))}
+        {rooms.map((chat) => {
+          return (
+            <li
+              className={`chat-item ${
+                selectedChatId === chat._id ? "selected" : ""
+              }`}
+              key={chat._id}
+              onClick={() => selectChat(chat._id, chat.user)}
+            >
+              <img
+                className="avatar"
+                src={chat.user.studentAvatar}
+                alt={chat.user._id}
+              />
+              <p className="username">{chat.user.firstName}</p>
+            </li>
+          );
+        })}
       </ul>
     </aside>
   );

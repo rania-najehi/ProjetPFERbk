@@ -1,10 +1,12 @@
 /* Navbar Styles */
 .navbar {
-  padding: 10px 50px;
   display: flex;
   justify-content: space-between;
+  padding: 0.5rem 1rem;
   align-items: center;
-  background-color: #333; /* Example background color */
+  background: #ff007b;
+
+  /* background-color: #333; */
 }
 
 /* Navigation Links */
@@ -14,7 +16,6 @@
   font-weight: 700;
   transition-duration: 0.7s;
   font-size: 20px;
-  margin: 0 15px;
 }
 
 .navLink:hover {
@@ -38,38 +39,4 @@
   background-color: #ff007b;
   border: 2px solid white;
   cursor: pointer;
-}
-
-/* Media Queries for Responsiveness */
-@media (max-width: 768px) {
-  .navbar {
-    padding: 10px 20px;
-    flex-direction: column;
-  }
-
-  .navLink {
-    font-size: 18px;
-    margin: 10px 0;
-  }
-
-  .loginBtn {
-    font-size: 18px;
-    padding: 8px 16px;
-  }
-}
-
-@media (max-width: 480px) {
-  .navbar {
-    padding: 10px 15px;
-  }
-
-  .navLink {
-    font-size: 16px;
-    margin: 8px 0;
-  }
-
-  .loginBtn {
-    font-size: 16px;
-    padding: 6px 12px;
-  }
 }

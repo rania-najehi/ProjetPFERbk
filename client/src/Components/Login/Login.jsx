@@ -1,10 +1,11 @@
-import React, { useContext, useState,  } from "react";
+import React, { useContext, useState } from "react";
 import "./Login.css";
 
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Context } from "../../main";
+import { socket } from "../../helpers/socket.js";
 
 const Login = () => {
   const { token, setToken } = useContext(Context);
@@ -23,24 +24,22 @@ const Login = () => {
     e.preventDefault();
     try {
       await axios
-        .post(
-          "http://127.0.0.1:4000/api/v1/user/login",
-          { email, password, role: "Student" },
-          {
-            withCredentials: true,
-            headers: { "Content-Type": "application/json" },
-          }
-        )
+        .post("http://127.0.0.1:4000/api/v1/user/login", {
+          email,
+          password,
+          role: "Student",
+        })
         .then((res) => {
           // console.log("res.data", );
 
-          toast.success(res.data.message);
-          console.log("token", res.data.token);
-          setToken(res.data.token); // setToken(res.data.token);
+          console.log("token", res.data);
+          setToken(res.data.token);
           navigateTo("/");
+          toast.success(res.data.message);
           setEmail("");
           setPassword("");
-        
+          setConfirmPassword("");
+          // socket.emit("join", res.data.user._id);
         });
     } catch (error) {
       toast.error(error.response.data.message);
