@@ -20,6 +20,7 @@ import JobOffer from "./components/JobOffer/JobOffer.jsx";
 import Events from "./components/Events/Events.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+
 const App = () => {
   const { token } = useContext(Context);
   const [loading, setLoading] = useState(true);

@@ -1,19 +1,54 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-const eventSchema = new mongoose.Schema({
-    title: {
-        type: String,
-        required: true
+const { Schema } = mongoose;
+
+// Define the ConcertEvent schema
+const concertEventSchema = new Schema({
+  title: {
+    type: String,
+   
+  },
+  description: {
+    type: String,
+  },
+  date: {
+    type: Date,
+    
+  },
+  startTime: {
+    type: String,
+   
+  },
+  endTime: {
+    type: String,
+  },
+  location: {
+    address: {
+      type: String,
+     
     },
-    description: {
-        type: String,
-        required: true
+    latitude: {
+      type: Number,
+      
     },
-    image: {
-        type: String,
-        required: false
-    }
+    longitude: {
+      type: Number,
+     
+    },
+  },
+  images: [String], // Array to store multiple image URLs
+  eventOrganizer: {
+    type: String,
+    
+  },
+  notes: {
+    type: String,
+  },
+  category: {
+    type: String,
+  },
 });
 
-const Event = mongoose.model('Event', eventSchema);
-export default Event;
+// Create the model from the schema
+const ConcertEvent = mongoose.model('ConcertEvent', concertEventSchema);
+export default ConcertEvent;

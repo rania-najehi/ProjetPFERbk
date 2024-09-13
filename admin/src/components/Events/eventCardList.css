@@ -1,0 +1,45 @@
+.event-card-list {
+  display: flex;
+  justify-content: center; /* Centre les cartes */
+  flex-wrap: wrap; /* Permet aux cartes de passer à la ligne suivante si elles sont trop larges */
+  gap: 20px; /* Espace entre les cartes */
+  padding: 20px;
+  border: 2px solid #ebabce; /* Bordure autour de l'ensemble des cartes */
+  border-radius: 10px; /* Coins arrondis */
+  background-color: #f9f9f9; /* Optionnel : couleur de fond */
+  margin-left: 20px;
+}
+
+
+
+.event-card-list {
+  width: 90%; /* Ajustez la largeur du conteneur selon vos besoins */
+  margin-left: 100px; /* Ajustez la marge gauche pour compenser la largeur de la sidebar */
+  border: 2px solid #9471f5; /* Bordure noire autour des cartes */
+  border-radius: 10px; /* Coins arrondis */
+  padding: 20px; /* Espace intérieur entre la bordure et les cartes */
+  display: flex;
+  flex-wrap: wrap; /* Les cartes vont se répartir sur plusieurs lignes si besoin */
+  justify-content: center; /* Centre les cartes horizontalement dans le conteneur */
+  background-color: #f8f9fa; /* Ajoute un fond pour mieux voir la bordure */
+}
+
+.card {
+  width: 250px; /* Largeur fixe pour chaque carte */
+  margin: 10px; /* Espace autour des cartes */
+  border: 1px solid #ddd; /* Bordure des cartes */
+  border-radius: 8px; /* Coins arrondis pour les cartes */
+}
+.card {
+  width: 250px;
+  height: 20px;
+  margin: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-10px) scale(1.05); /* La carte se déplace vers le haut et s'agrandit légèrement */
+  box-shadow: 0 8px 16px hwb(323 34% 0% / 0.2); /* Ajoute une ombre plus prononcée pour l'effet */
+}

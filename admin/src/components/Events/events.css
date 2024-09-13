@@ -1,3 +1,65 @@
+/* Events.css */
+
+
+.add-event-btn {
+  text-align: right; 
+  margin-right: 20px; /* Facultatif: ajoute un espace à droite */
+  margin-top: 40px; /* Ajoute de l'espace en haut pour le descendre */
+
+  margin-bottom: 50px;
+  
+
+}
+
+.add-event-btn .btn {
+  margin-left: auto; /* Aligne le bouton à droite si le conteneur est en flex */
+}
+.add-event-btn button {
+  background-color: #d400ff;
+  border-color: hwb(327 9% 9%);
+  color: white;
+  font-weight: bold;
+  padding: 10px 20px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.add-event-btn button:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+/* Changer la couleur de la croix en rouge */
+.modal-header .btn-close {
+  filter: invert(30%) sepia(100%) saturate(1000%) hue-rotate(0deg) brightness(91%) contrast(101%);
+  opacity: 1; 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 .events-page {
   max-width: 80%;
   margin: 0 auto;
@@ -5,13 +67,13 @@
 }
 
 .events-navbar {
-  background-color: white; /* White background */
-  border: 2px solid #007bff; /* Blue border */
+  background-color: white; 
+  border: 2px solid #007bff; 
   padding: 10px 20px;
   margin-bottom: 20px;
-  border-radius: 8px; /* Optional: Rounded corners */
-}
+  border-radius: 8px; 
 
+/*
 .events-navbar ul {
   list-style-type: none;
   padding: 0;
@@ -25,17 +87,18 @@
 
 .events-navbar a {
   color: #007bff; /* Blue text for links */
+ /* 
   text-decoration: none;
   font-weight: bold;
 }
 
 .events-navbar a:hover {
   text-decoration: underline; /* Optional: Underline on hover */
-}
 
+/*
 .events-navbar button {
-  background-color: #e83e8c; /* Pink */
-  color: white; /* White text */
+  background-color: #e83e8c; 
+  color: white; 
   border: none;
   padding: 10px 20px;
   border-radius: 4px;
@@ -44,7 +107,7 @@
 }
 
 .events-navbar button:hover {
-  background-color: #d63384; /* Darker pink on hover */
+  background-color: #d63384; 
 }
 
 .events-list {
@@ -58,7 +121,7 @@
 
 
 .event-card {
-  background-color: #f8f9fa; /* Light gray */
+  background-color: #f8f9fa; 
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -80,7 +143,7 @@
 }
 
 .event-card button {
-  background-color: #dc3545; /* Dark pink */
+  background-color: #dc3545; 
   color: white;
   border: none;
   padding: 8px 16px;
@@ -90,5 +153,6 @@
 }
 
 .event-card button:hover {
-  background-color: #c82333; /* Lighter dark pink on hover */
+  background-color: #c82333; 
 }
+*/
