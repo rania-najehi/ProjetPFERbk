@@ -15,9 +15,9 @@
   margin-left: auto; /* Aligne le bouton à droite si le conteneur est en flex */
 }
 .add-event-btn button {
-  background-color: #d400ff;
-  border-color: hwb(327 9% 9%);
-  color: white;
+  background-color: hwb(300 97% 2%);
+  border-color: hwb(261 16% 2%);
+  color: rgb(243, 18, 213);
   font-weight: bold;
   padding: 10px 20px;
   border-radius: 5px;
@@ -25,7 +25,7 @@
 }
 
 .add-event-btn button:hover {
-  background-color: #0056b3;
+  background-color: rgb(243, 144, 218);;
   border-color: #0056b3;
 }
 /* Changer la couleur de la croix en rouge */

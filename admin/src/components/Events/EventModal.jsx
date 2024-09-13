@@ -1,10 +1,9 @@
-// EventModal.js
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import axios from 'axios';
 
 const EventModal = ({ show, handleClose, fetchEvents }) => {
-  const [formData, setFormData] = useState({
+  const initialFormData = {
     title: '',
     description: '',
     date: '',
@@ -19,7 +18,10 @@ const EventModal = ({ show, handleClose, fetchEvents }) => {
     eventOrganizer: '',
     notes: '',
     category: ''
-  });
+  };
+
+  const [formData, setFormData] = useState(initialFormData);
+  const [error, setError] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,19 +43,32 @@ const EventModal = ({ show, handleClose, fetchEvents }) => {
   };
 
   const handleImagesChange = (e) => {
+    const files = Array.from(e.target.files);
+    const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+
+    // Validate file types
+    for (let i = 0; i < files.length; i++) {
+      if (!validImageTypes.includes(files[i].type)) {
+        setError("Seules les images au format JPEG, PNG ou GIF sont acceptées.");
+        return;
+      }
+    }
+
     setFormData({
       ...formData,
-      images: Array.from(e.target.files),
+      images: files,
     });
+    setError(''); // Clear any previous errors
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Preparing FormData to send
     const eventFormData = new FormData();
-    Object.keys(formData).forEach(key => {
+    Object.keys(formData).forEach((key) => {
       if (key === 'location') {
-        Object.keys(formData[key]).forEach(subKey => {
+        Object.keys(formData[key]).forEach((subKey) => {
           eventFormData.append(`location.${subKey}`, formData[key][subKey]);
         });
       } else if (key === 'images') {
@@ -71,10 +86,14 @@ const EventModal = ({ show, handleClose, fetchEvents }) => {
           'Content-Type': 'multipart/form-data',
         },
       });
+
+      // Clear form fields after successful submission
+      setFormData(initialFormData);
       handleClose();
-      fetchEvents(); // Re-fetch events to update the list
+      fetchEvents(); // Refresh the events list
     } catch (error) {
-      console.error('Erreur lors de l\'ajout de l\'évènement', error);
+      console.error('Erreur lors de l\'ajout de l\'événement :', error);
+      setError("Une erreur s'est produite lors de l'ajout de l'événement. Veuillez réessayer.");
     }
   };
 
@@ -84,6 +103,7 @@ const EventModal = ({ show, handleClose, fetchEvents }) => {
         <Modal.Title>Ajouter un évènement</Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        {error && <div className="alert alert-danger">{error}</div>}
         <Form onSubmit={handleSubmit}>
           <Form.Group controlId="formTitle">
             <Form.Label>Titre de l'évènement</Form.Label>

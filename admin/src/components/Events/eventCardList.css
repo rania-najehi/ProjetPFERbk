@@ -1,45 +1,69 @@
 .event-card-list {
   display: flex;
-  justify-content: center; /* Centre les cartes */
+  justify-content: center; /* Centre les cartes horizontalement */
   flex-wrap: wrap; /* Permet aux cartes de passer à la ligne suivante si elles sont trop larges */
   gap: 20px; /* Espace entre les cartes */
   padding: 20px;
   border: 2px solid #ebabce; /* Bordure autour de l'ensemble des cartes */
   border-radius: 10px; /* Coins arrondis */
-  background-color: #f9f9f9; /* Optionnel : couleur de fond */
-  margin-left: 20px;
-}
-
-
-
-.event-card-list {
-  width: 90%; /* Ajustez la largeur du conteneur selon vos besoins */
+  background-color: #f9f9f9; /* Couleur de fond */
   margin-left: 100px; /* Ajustez la marge gauche pour compenser la largeur de la sidebar */
-  border: 2px solid #9471f5; /* Bordure noire autour des cartes */
-  border-radius: 10px; /* Coins arrondis */
-  padding: 20px; /* Espace intérieur entre la bordure et les cartes */
-  display: flex;
-  flex-wrap: wrap; /* Les cartes vont se répartir sur plusieurs lignes si besoin */
-  justify-content: center; /* Centre les cartes horizontalement dans le conteneur */
-  background-color: #f8f9fa; /* Ajoute un fond pour mieux voir la bordure */
 }
 
-.card {
+.event-card {
   width: 250px; /* Largeur fixe pour chaque carte */
-  margin: 10px; /* Espace autour des cartes */
-  border: 1px solid #ddd; /* Bordure des cartes */
   border-radius: 8px; /* Coins arrondis pour les cartes */
-}
-.card {
-  width: 250px;
-  height: 20px;
-  margin: 10px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  margin: 10px; /* Espace entre les cartes */
+  border: 1px solid #ddd; /* Bordure des cartes */
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Effet de transition pour le survol */
+  
+  display: flex;
+  flex-direction: column; /* Disposer les éléments de la carte verticalement */
+  justify-content: space-between; /* Mettre les boutons en bas */
+  height: 100%; /* Assurer une hauteur fixe */
 }
 
-.card:hover {
-  transform: translateY(-10px) scale(1.05); /* La carte se déplace vers le haut et s'agrandit légèrement */
-  box-shadow: 0 8px 16px hwb(323 34% 0% / 0.2); /* Ajoute une ombre plus prononcée pour l'effet */
+.card-img-container {
+  width: 100%; /* Largeur du conteneur de l'image */
+  height: 200px; /* Hauteur fixe du conteneur de l'image */
+  overflow: hidden; /* Masquer les parties de l'image qui dépassent */
+}
+
+.card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ajuster l'image pour couvrir l'espace du conteneur */
+}
+
+.event-card-body {
+  flex-grow: 1; /* Remplir l'espace restant pour pousser les boutons en bas */
+}
+
+.event-card:hover {
+  transform: translateY(-10px) scale(1.05); /* Déplacer la carte vers le haut et agrandir légèrement */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Ajout d'une ombre plus prononcée */
+}
+
+.card-buttons {
+  display: flex;
+
+ 
+  padding: 10px;
+  border-top: 1px solid #ddd; /* Bordure supérieure pour séparer les boutons du contenu */
+  background-color: #f9f9f9; /* Couleur de fond des boutons */
+}
+
+.card-buttons .btn {
+  font-size: 0.875rem; /* Taille ajustée des boutons */
+  padding: 5px 10px; /* Espacement interne des boutons */
+  border-radius: 4px; /* Coins légèrement arrondis pour les boutons */
+  transition: background-color 0.3s ease; /* Transition sur le survol */
+}
+
+.card-buttons .btn-danger:hover {
+  background-color: #ff4d4f; /* Couleur rouge plus prononcée au survol */
+}
+
+.card-buttons .btn-primary:hover {
+  background-color: #0056b3; /* Couleur bleue plus prononcée au survol */
 }

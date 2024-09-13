@@ -5,6 +5,7 @@ import { fileURLToPath } from "url";
 
 import multer from 'multer';
 
+const UPLOADS_DIR = path.resolve('path', 'to', 'your', 'uploads'); // Update this path
 
 
 
@@ -82,7 +83,7 @@ export const deleteEvent = async (req, res) => {
     // Delete associated images from the 'uploads' directory
     if (deletedEvent.images.length > 0) {
       deletedEvent.images.forEach((image) => {
-        const imagePath = path.join(__dirname, '..', 'uploads', path.basename(image));
+        const imagePath = path.join(UPLOADS_DIR, path.basename(image));
         if (fs.existsSync(imagePath)) {
           fs.unlinkSync(imagePath);
         }
@@ -94,9 +95,6 @@ export const deleteEvent = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
-
-
 
 
 
