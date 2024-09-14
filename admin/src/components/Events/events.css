@@ -1,31 +1,25 @@
 /* Events.css */
 
-
 .add-event-btn {
-  text-align: right; 
-  margin-right: 20px; /* Facultatif: ajoute un espace à droite */
-  margin-top: 40px; /* Ajoute de l'espace en haut pour le descendre */
-
-  margin-bottom: 50px;
-  
-
+  position: absolute;
+  right: 60px; /* Positionne le bouton à 60px du bord droit */
+  bottom: 527px; /* Positionne le bouton à 20px du bord inférieur */
+  /* Ajustez 'bottom' pour le positionner plus haut ou plus bas selon vos besoins */
 }
 
-.add-event-btn .btn {
-  margin-left: auto; /* Aligne le bouton à droite si le conteneur est en flex */
-}
 .add-event-btn button {
-  background-color: hwb(300 97% 2%);
-  border-color: hwb(261 16% 2%);
-  color: rgb(243, 18, 213);
+  background-color: hsl(240, 11%, 95%);
+  border-color: hwb(330 2% 7%);
+  color: rgb(15, 19, 223);
   font-weight: bold;
   padding: 10px 20px;
   border-radius: 5px;
+  margin-top: 50px;
   transition: background-color 0.3s ease;
 }
 
 .add-event-btn button:hover {
-  background-color: rgb(243, 144, 218);;
+  background-color: hwb(310 45% 7%);
   border-color: #0056b3;
 }
 /* Changer la couleur de la croix en rouge */
@@ -33,7 +27,6 @@
   filter: invert(30%) sepia(100%) saturate(1000%) hue-rotate(0deg) brightness(91%) contrast(101%);
   opacity: 1; 
 }
-
 
 
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Button, Carousel } from 'react-bootstrap';
-import { Trash, Pencil } from 'react-bootstrap-icons'; // Import des icônes Bootstrap
-import './eventCardList.css'; // Assurez-vous que ce fichier CSS est correctement configuré
+import { Trash, Pencil } from 'react-bootstrap-icons';
+import './eventCardList.css';
 import imagePlaceholder from "../../assets/image.png";
 
 const EventCardList = ({ events, onDelete, onUpdate }) => {
@@ -38,60 +38,52 @@ const EventCardList = ({ events, onDelete, onUpdate }) => {
             <Card.Title>{event.title || 'No title available'}</Card.Title>
 
             <Card.Text>
-              {event.description || 'Description not available'}
-            </Card.Text>
-
-            <Card.Text>
-              {event.date ? (
-                <>
-                  <strong>Date:</strong> {new Date(event.date).toLocaleDateString()}
-                  <br />
-                </>
-              ) : (
-                'Date not available'
-              )}
-
-              {event.startTime && event.endTime ? (
-                <>
-                  <strong>Temps de début:</strong> {new Date(event.startTime).toLocaleTimeString()}
-                  <br />
-                  <strong>Temps de fin:</strong> {new Date(event.endTime).toLocaleTimeString()}
-                  <br />
-                </>
-              ) : (
-                'Start and End Time not available'
-              )}
-
-              {event.location ? (
-                <>
-                  <strong>Localisation:</strong> {event.location.address || 'Address not available'} (Lat: {event.location.latitude || 'N/A'}, Lon: {event.location.longitude || 'N/A'})
-                  <br />
-                  {/* Affichage de Google Maps */}
-                  {event.location.latitude && event.location.longitude ? (
-                    <div className="map-container">
-                      <iframe
-                        width="100%"
-                        height="200"
-                        frameBorder="0"
-                        style={{ border: 0 }}
-                        src={`https://www.google.com/maps/embed/v1/view?key=AIzaSyCkOwHcL-AC9cJsSBKHSCiiMdk3DwSCrc0&center=${event.location.latitude},${event.location.longitude}&zoom=15`}
-                        allowFullScreen
-                        title="Event Location"
-                      ></iframe>
-                    </div>
-                  ) : (
-                    'Map not available'
-                  )}
-                </>
-              ) : (
-                'Location not available'
-              )}
-
-              <strong>Organisateur:</strong> {event.eventOrganizer || 'Organizer not available'}
-              <br />
-              <strong>Notes:</strong> {event.notes || 'No additional notes'}
-              <br />
-              <strong>Catgorie:</strong> {event.category || 'No category'}
+              <div><strong>Description:</strong> {event.description || 'Description not available'}</div>
+              <div>
+                {event.date ? (
+                  <>
+                    <strong>Date:</strong> {new Date(event.date).toLocaleDateString()}
+                  </>
+                ) : (
+                  'Date not available'
+                )}
+              </div>
+              <div>
+                {event.startTime && event.endTime ? (
+                  <>
+                    <strong>Date de début:</strong> {new Date(event.startTime).toLocaleTimeString()}
+                    <br />
+                    <strong>Date de fin:</strong> {new Date(event.endTime).toLocaleTimeString()}
+                  </>
+                ) : (
+                  'Start and End Time not available'
+                )}
+              </div>
+             
+              <div><strong>Catégorie:</strong> {event.category || 'Pas de catégorie'}</div>
+              <div><strong>Organisateur:</strong> {event.eventOrganizer || 'Organizer not available'}</div>
+             
+              
+              <div><strong>Notes:</strong> {event.notes || 'Pas de note ajouté'}</div>
+              <Card.Text>
+  <div>
+    <strong>Localisation :</strong> Champs-Élysées, Paris
+    <br />
+    (Lat: 48.8566, Lon: 2.3522)
+    <br />
+    <div className="map-container" style={{ marginTop: '10px' }}>
+      <iframe
+        width="100%"
+        height="200"
+        frameBorder="0"
+        style={{ border: 0 }}
+        src={`https://www.google.com/maps/embed/v1/view?key=AIzaSyCkOwHcL-AC9cJsSBKHSCiiMdk3DwSCrc0&center=48.8566,2.3522&zoom=15`}
+        allowFullScreen
+        title="Localisation de l'évènement"
+      ></iframe>
+    </div>
+  </div>
+</Card.Text>
             </Card.Text>
           </Card.Body>
 
