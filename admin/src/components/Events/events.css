@@ -9,7 +9,7 @@
 
 .add-event-btn button {
   background-color: hsl(240, 11%, 95%);
-  border-color: hwb(330 2% 7%);
+  border-color: rgb(15, 19, 223);
   color: rgb(15, 19, 223);
   font-weight: bold;
   padding: 10px 20px;
@@ -26,6 +26,20 @@
 .modal-header .btn-close {
   filter: invert(30%) sepia(100%) saturate(1000%) hue-rotate(0deg) brightness(91%) contrast(101%);
   opacity: 1; 
+}
+
+
+.search-form {
+  display: flex;
+  align-items: center;
+  margin-left: 200px; /* Décale légèrement vers la droite pour éviter la sidebar */
+  margin-top: 50px;
+}
+
+.search-input {
+  width: 300px !important; /* Force la réduction de la largeur de l'input */
+  margin-right: 10px; /* Espace entre l'input et le bouton */
+  max-width: none; /* Empêche que la largeur max soit imposée */
 }
 
 

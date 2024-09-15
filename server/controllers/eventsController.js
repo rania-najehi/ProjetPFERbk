@@ -99,6 +99,18 @@ export const deleteEvent = async (req, res) => {
 
 
 
+// Get Events by Category (GET /events/category/:category)
+export const getEventsByCategory = async (req, res) => {
+  const { category } = req.params;
+
+  try {
+    // Recherche des événements correspondant à la catégorie
+    const events = await ConcertEvent.find({ category: category });
+    res.status(200).json(events);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
 
 

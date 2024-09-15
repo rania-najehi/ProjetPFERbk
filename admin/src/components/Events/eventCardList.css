@@ -4,11 +4,11 @@
   flex-wrap: wrap; /* Permet aux cartes de passer à la ligne suivante si elles sont trop larges */
   gap: 20px; /* Espace entre les cartes */
   padding: 20px;
-  border: 2px solid hsl(327, 82%, 47%); /* Bordure autour de l'ensemble des cartes */
+  border: 2px solid hsl(234, 73%, 44%); /* Bordure autour de l'ensemble des cartes */
   border-radius: 10px; /* Coins arrondis */
   background-color: #f9f9f9; /* Couleur de fond */
   margin-left: 100px; /* Ajustez la marge gauche pour compenser la largeur de la sidebar */
-  margin-top: 100px; 
+  margin-top: 50px; 
   margin-right: 90px;
 }
 
