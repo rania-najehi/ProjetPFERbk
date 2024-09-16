@@ -97,7 +97,7 @@ const ChatMessages = ({
               );
             })}
           </div>
-          <footer className="footer_chat">
+          <div className="footer_chat">
             {isTyping && (
               <div className="typing-container">
                 <div className="typing">{typingStatus}</div>
@@ -147,7 +147,7 @@ const ChatMessages = ({
               </div>
               <input type="submit" value="Send" />
             </form>
-          </footer>
+          </div>
         </>
       )}
     </main>

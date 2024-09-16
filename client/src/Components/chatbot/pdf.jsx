@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
-import img from "../../images/pdf.png";
 
 // Specify the URL for the worker
-pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 const PdfPreview = ({ pdfUrl, cancelFileUpload }) => {
   const [numPages, setNumPages] = useState(null);
@@ -31,17 +30,19 @@ const PdfPreview = ({ pdfUrl, cancelFileUpload }) => {
           onLoadError={onDocumentLoadError}
           loading="Loading PDF..."
         >
-          {Array.from(new Array(numPages), (el, index) => (
-            <Page key={`page_${index + 1}`} pageNumber={index + 1} />
-          ))}
+          {/* Render only the first page and scale it to fit within 150x150 */}
+          <Page
+            pageNumber={1}
+            // scale={0.5} // Adjust scale to fit 150px width (tweak for a better fit if needed)
+            width={150} // Enforce the width of 150px
+            height={150} // Enforce the height of 150px
+            renderTextLayer={false}
+            renderAnnotationLayer={false}
+          />
         </Document>
       )}
+
       <div>
-        <img
-          src={img}
-          alt="PDF Thumbnail"
-          style={{ width: "100px", height: "150px", margin: "20px" }}
-        />
         <p className="pdf_name">{pdfUrl.name ? pdfUrl.name : pdfUrl}</p>
         <button className="close-button" onClick={cancelFileUpload}>
           ×

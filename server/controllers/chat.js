@@ -7,6 +7,10 @@ export const addMessage = async function (req, res) {
   const { userId, content, roomId, media } = req.body;
   let file;
   try {
+    // console.log("====================================");
+    // console.log(userId, content, roomId, media, req.file.filename);
+    // console.log("====================================");
+    // res.send("hello");
     if (["image", "video", "pdf", "audio"].includes(media)) {
       file = req.file.filename;
     }
@@ -61,8 +65,8 @@ export const getAllMessages = async function (req, res) {
 export const getUsersTobeConnection = async function (req, res) {
   try {
     const userId = req.user._id;
-    const page = req.params.page;
-    const limit = req.params.limit;
+    const page = parseInt(req.params.page) || 1; // Get page number, default to 1
+    const limit = parseInt(req.params.limit) || 3; // Items per page, default to 10
     // Find the current user and populate their rooms
     const currentUser = await User.findById(userId).populate("rooms").exec();
     if (!currentUser) {
@@ -75,15 +79,26 @@ export const getUsersTobeConnection = async function (req, res) {
     // Find users who are not in any of these rooms
     const usersWithoutCommonRooms = await User.find({
       _id: { $ne: userId }, // Exclude the current user
-      status: { $nin: ["Pending", "Rejected"] },
+      // status: { $nin: ["Pending", "Rejected"] },
 
       rooms: { $nin: roomIds }, // Users not in any of the current user's rooms
     })
       .sort({ createdAt: 1 }) // Sort by the indexed field
-      .skip((page - 1) * limit) // Skip the appropriate number of documents
-      .limit(limit);
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .exec();
+    const totalUsers = await User.find({
+      _id: { $ne: userId }, // Exclude the current user
+      // status: { $nin: ["Pending", "Rejected"] },
 
-    res.send(usersWithoutCommonRooms);
+      rooms: { $nin: roomIds }, // Users not in any of the current user's rooms
+    });
+    res.send({
+      usersWithoutCommonRooms,
+      totalUsers,
+      currentPage: page,
+      totalPages: Math.ceil(totalUsers.length / limit),
+    });
   } catch (error) {
     console.error(error);
     throw error;
@@ -92,9 +107,10 @@ export const getUsersTobeConnection = async function (req, res) {
 export const getUsersConnections = async function (req, res) {
   try {
     const userId = req.user._id;
-    const page = req.params.page;
-    const limit = req.params.limit;
+    const page = parseInt(req.params.page) || 1; // Get page number, default to 1
+    const limit = parseInt(req.params.limit) || 3; // Items per page, default to 10
     // Find the user and populate their rooms
+    // const totalUsers = await User.countDocuments();
     const currentUser = await User.findById(userId).populate("rooms").exec();
     if (!currentUser) {
       return res.status(404).send("user not found");
@@ -109,11 +125,21 @@ export const getUsersConnections = async function (req, res) {
       rooms: { $in: roomIds },
       // status: { $ne: 'pending' }
     })
-      .sort({ createdAt: 1 }) // Sort by the indexed field
-      .skip((page - 1) * limit) // Skip the appropriate number of documents
-      .limit(limit);
-
-    res.send(usersWithCommonRooms);
+      // .sort({ createdAt: 1 }) // Sort by the indexed field
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .exec();
+    const totalUsers = await User.find({
+      _id: { $ne: userId }, // Exclude the current user
+      rooms: { $in: roomIds },
+      // status: { $ne: 'pending' }
+    });
+    res.send({
+      usersWithCommonRooms,
+      totalUsers,
+      currentPage: page,
+      totalPages: Math.ceil(totalUsers.length / limit),
+    });
   } catch (error) {
     throw error;
   }

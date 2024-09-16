@@ -4,7 +4,7 @@ import ErrorHandler, {
 } from "../middlewares/errorMiddleware.js";
 import { generateToken } from "../utils/jwtToken.js";
 import { User } from "../models/userSchema.js";
-
+import { sendVerificationEmail } from "../utils/nodeMailer.js";
 export const studentRegister = catchAsyncErrors(async (req, res, next) => {
   const { firstName, lastName, email, phone, password, genre, levelEnglish } =
     req.body;
@@ -84,8 +84,9 @@ export const updateStudentStatus = catchAsyncErrors(async (req, res, next) => {
   if (!student) {
     return next(new ErrorHandler("Étudiant non trouvé", 404));
   }
-  if (status === "Accepted" || status === "Rejected")
-    await sendEmail(student.email, status, student.name);
+  if (status === "Accepted" || status === "Rejected") {
+    await sendVerificationEmail(student.email, status, student.firstName);
+  }
   res.status(200).json({
     success: true,
     student,
@@ -98,7 +99,7 @@ export const getAcceptedStudents = async (req, res) => {
       status: "Accepted",
       role: "Student",
     });
-    await sendEmail(student.email, "Accepted", student.name);
+    await sendVerificationEmail(student.email, "Accepted", student.firstName);
     res.status(200).json({
       success: true,
       count: acceptedStudents.length,

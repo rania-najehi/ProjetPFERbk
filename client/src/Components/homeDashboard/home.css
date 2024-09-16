@@ -1,0 +1,98 @@
+body {
+  /* font-family: "Roboto", sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+  margin: 0; */
+}
+
+.container_dash {
+  display: flex;
+  flex-wrap: wrap;
+  background-image: url("../../../public/assets/Allura - Giant Phone.png");
+  background-repeat: no-repeat;
+  padding: 20px;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 2rem;
+}
+
+.section_dash {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.card_dash {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  color: #333;
+  min-height: 250px;
+  /* transition: all 1s ease-in-out; */
+}
+.card_dash:hover {
+  transform: rotate(3deg);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  background-color: #f8f8f8;
+  transition: all 0.3s ease-in-out;
+
+  /* ... other hover styles ... */
+}
+.card-header_dash {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.card-header_dash h2 {
+  margin: 0;
+}
+
+.card-content_dash {
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: #cccccc; /* Light gray for text */
+}
+
+.card-content_dash p {
+  margin-bottom: 10px;
+}
+
+.card-content_dash .icon_dash {
+  font-size: 2rem;
+  color: #ff007b; /* Secondary color for icons */
+}
+
+.card-footer_dash {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+/* Responsive Layout */
+@media (min-width: 768px) {
+  .section_dash {
+    width: 50%;
+  }
+}
+
+@media (min-width: 1200px) {
+  .section_dash {
+    width: 33.33%;
+  }
+}
+
+.card-footer_dash button {
+  background-color: #ff007b; /* Secondary color for button */
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.card-footer_dash button:hover {
+  background-color: #ff007b; /* Darker blue on hover */
+}

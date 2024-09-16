@@ -28,6 +28,7 @@ import Chat from "./Pages/chat.jsx";
 import Event from "./Pages/Events.jsx";
 import "./App.css";
 import CvGenerator from "./Pages/CvGenerator.jsx";
+import HomeDashbaord from "./Pages/homeDashboard.jsx";
 const App = () => {
   const { token, setToken } = useContext(Context);
   return (
@@ -37,7 +38,9 @@ const App = () => {
         <Navbar />
         <Routes>
           <Route path="/dashboard" element={<DashboardStudent />}>
-            <Route index element={<MessageStudentPage />} />
+            <Route index element={<HomeDashbaord />} />
+
+            {/* <Route  element={<MessageStudentPage />} /> */}
             <Route path="/dashboard/chat" element={<Chat />} />
             <Route path="/dashboard/event" element={<Event />} />
 

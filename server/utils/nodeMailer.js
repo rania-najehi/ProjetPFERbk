@@ -1,4 +1,6 @@
-const nodemailer = require("nodemailer");
+// import { config } from "dotenv";
+// config({ path: "../config/config.env" });
+import nodemailer from "nodemailer";
 const accepted = (url, name) => `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -160,19 +162,22 @@ const rejected = (url, name) => `<!DOCTYPE html>
 </body>
 </html>
 `;
+console.log("process.env.EMAIL_USER", process.env.EMAIL_USER);
+console.log("process.env.EMAIL_PASS", process.env.EMAIL_PASS);
 // Configure the transport options
-const transporter = nodemailer.createTransport({
-  host: "outlook.office365.com",
-  // port: 587,
-  // secure: false, // Use TLS
-  auth: {
-    user: process.env.EMAIL_USER, // Your email
-    pass: process.env.EMAIL_PASS, // Your email password
-  },
-});
+const transporter = (user, pass) =>
+  nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    auth: {
+      user, // Your email
+      pass,
+    },
+  });
 
 // Function to send email
-const sendVerificationEmail = (to, type, userName) => {
+export const sendVerificationEmail = (to, type, userName) => {
   let subject = "";
   let htmlContent = "";
 
@@ -188,7 +193,6 @@ const sendVerificationEmail = (to, type, userName) => {
     default:
       throw new Error("Invalid email type");
   }
-
   const mailOptions = {
     from: process.env.EMAIL_USER,
     to,
@@ -196,7 +200,7 @@ const sendVerificationEmail = (to, type, userName) => {
     html: htmlContent,
   };
 
-  return transporter.sendMail(mailOptions);
+  return transporter(process.env.EMAIL_USER, process.env.EMAIL_PASS).sendMail(
+    mailOptions
+  );
 };
-
-module.exports = sendVerificationEmail;

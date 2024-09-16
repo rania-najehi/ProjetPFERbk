@@ -40,7 +40,7 @@ const SideBar = () => {
   const navigateTo = useNavigate();
 
   const gotoHomePage = () => {
-    navigateTo("/");
+    navigateTo("/dashboard");
     setCollapsed(!collapsed);
   };
 
@@ -65,7 +65,7 @@ const SideBar = () => {
   };
 
   const gotoEventsPage = () => {
-    navigateTo("/dashboard/community");
+    navigateTo("/dashboard/event");
     setCollapsed(true);
   };
 

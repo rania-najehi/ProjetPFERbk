@@ -1,9 +1,15 @@
 import React from "react";
+import { Grid, TextField, Pagination, Box, Typography } from "@mui/material";
 
 const ChatList = ({ rooms, selectChat, user, selectedChatId }) => {
   return (
     <aside className="aside_chat">
-      {console.log("rooomqqqqq", rooms)}
+      <Box>
+        <Typography variant="h3" color="white" padding={3} component="h5">
+          Welcome {user.firstName}
+        </Typography>
+      </Box>
+      {/* {console.log("rooomqqqqq", rooms)} */}
       <ul id="chat-list">
         {rooms.map((chat) => {
           return (

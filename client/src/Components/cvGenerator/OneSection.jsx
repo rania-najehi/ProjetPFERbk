@@ -28,13 +28,13 @@ const OneSection = ({ section, user }) => {
       sx={{ marginBottom: 5, bgcolor: "#ff007b", padding: 2, borderRadius: 2 }}
     >
       <AccordionSummary
-        expandIcon={<ExpandMoreIcon sx={{ color: "#fff", fontSize: 40 }} />}
+        expandIcon={<ExpandMoreIcon sx={{ color: "#fff", fontSize: 30 }} />}
       >
         <Box display="flex" alignItems="center" gap={2}>
           {section.icon}
           <Typography
             letterSpacing={3}
-            fontSize={22}
+            fontSize={20}
             fontWeight={"meduim"}
             color="#fff"
           >

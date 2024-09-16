@@ -19,9 +19,9 @@ export default function ResponsiveDatePickers() {
           "StaticDatePicker",
         ]}
       >
-        <DemoItem label="Desktop variant">
+        {/* <DemoItem label="Desktop variant">
           <DesktopDatePicker defaultValue={dayjs("2022-04-17")} />
-        </DemoItem>
+        </DemoItem> */}
 
         <DemoItem label="Static variant">
           <StaticDatePicker defaultValue={dayjs("2022-04-17")} />
