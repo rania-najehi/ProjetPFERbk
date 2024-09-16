@@ -89,9 +89,10 @@ const EventCardList = ({ events, onDelete, onUpdate }) => {
 
           {/* Boutons d'actions pour Update et Delete fixés en bas */}
           <div className="card-buttons">
-            <Button variant="outline-primary" className="mr-2" onClick={() => onUpdate(event._id)}>
-              <Pencil />
-            </Button>
+          <Button variant="outline-primary" className="mr-2" onClick={() => onUpdate(event)}>
+  <Pencil />
+</Button>
+
             <Button variant="outline-danger" onClick={() => onDelete(event._id)}>
               <Trash />
             </Button>

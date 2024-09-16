@@ -1,27 +1,54 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import axios from 'axios';
 
-const EventModal = ({ show, handleClose, fetchEvents }) => {
-  const initialFormData = {
+const EventModal = ({ show, handleClose, fetchEvents, event }) => {
+  const [formData, setFormData] = useState({
     title: '',
     description: '',
     date: '',
     startTime: '',
     endTime: '',
-    location: {
-      address: '',
-      latitude: '',
-      longitude: ''
-    },
-    images: [],
+    category: '',
     eventOrganizer: '',
     notes: '',
-    category: ''
-  };
+    images: [], // Pour les nouvelles images à télécharger
+  });
 
-  const [formData, setFormData] = useState(initialFormData);
-  const [error, setError] = useState('');
+  useEffect(() => {
+    if (event) {
+      // Mode édition : pré-remplir les champs avec les données de l'événement
+      const isValidDate = (dateString) => {
+        const date = new Date(dateString);
+        return !isNaN(date.getTime());
+      };
+
+      setFormData({
+        title: event.title || '',
+        description: event.description || '',
+        date: event.date && isValidDate(event.date) ? new Date(event.date).toISOString().split('T')[0] : '',
+        startTime: event.startTime && isValidDate(event.startTime) ? new Date(event.startTime).toISOString().split('T')[1].substring(0, 5) : '',
+        endTime: event.endTime && isValidDate(event.endTime) ? new Date(event.endTime).toISOString().split('T')[1].substring(0, 5) : '',
+        category: event.category || '',
+        eventOrganizer: event.eventOrganizer || '',
+        notes: event.notes || '',
+        images: [], // Réinitialiser les images lors de l'ouverture du modal
+      });
+    } else {
+      // Mode ajout : réinitialiser les champs
+      setFormData({
+        title: '',
+        description: '',
+        date: '',
+        startTime: '',
+        endTime: '',
+        category: '',
+        eventOrganizer: '',
+        notes: '',
+        images: [],
+      });
+    }
+  }, [event, show]); // Ajoutez show pour réinitialiser les champs lorsque le modal est affiché
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,82 +58,57 @@ const EventModal = ({ show, handleClose, fetchEvents }) => {
     });
   };
 
-  const handleLocationChange = (e) => {
-    const { name, value } = e.target;
+  const handleFileChange = (e) => {
     setFormData({
       ...formData,
-      location: {
-        ...formData.location,
-        [name]: value,
-      },
+      images: e.target.files, // Stocker les fichiers sélectionnés
     });
-  };
-
-  const handleImagesChange = (e) => {
-    const files = Array.from(e.target.files);
-    const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
-
-    // Validate file types
-    for (let i = 0; i < files.length; i++) {
-      if (!validImageTypes.includes(files[i].type)) {
-        setError("Seules les images au format JPEG, PNG ou GIF sont acceptées.");
-        return;
-      }
-    }
-
-    setFormData({
-      ...formData,
-      images: files,
-    });
-    setError(''); // Clear any previous errors
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Preparing FormData to send
-    const eventFormData = new FormData();
-    Object.keys(formData).forEach((key) => {
-      if (key === 'location') {
-        Object.keys(formData[key]).forEach((subKey) => {
-          eventFormData.append(`location.${subKey}`, formData[key][subKey]);
-        });
-      } else if (key === 'images') {
-        formData[key].forEach((file) => {
-          eventFormData.append('images', file);
-        });
+    const formDataToSend = new FormData();
+    Object.keys(formData).forEach(key => {
+      if (key === 'images') {
+        for (let i = 0; i < formData.images.length; i++) {
+          formDataToSend.append('images', formData.images[i]);
+        }
       } else {
-        eventFormData.append(key, formData[key]);
+        formDataToSend.append(key, formData[key]);
       }
     });
 
     try {
-      await axios.post('http://127.0.0.1:4000/api/v1/event/events', eventFormData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-
-      // Clear form fields after successful submission
-      setFormData(initialFormData);
+      if (event) {
+        await axios.put(`http://127.0.0.1:4000/api/v1/event/events/${event._id}`, formDataToSend, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+      } else {
+        await axios.post('http://127.0.0.1:4000/api/v1/event/events', formDataToSend, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+      }
+      fetchEvents();
       handleClose();
-      fetchEvents(); // Refresh the events list
     } catch (error) {
-      console.error('Erreur lors de l\'ajout de l\'événement :', error);
-      setError("Une erreur s'est produite lors de l'ajout de l'événement. Veuillez réessayer.");
+      console.error('Erreur lors de la soumission du formulaire', error);
     }
   };
 
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Ajouter un évènement</Modal.Title>
+        <Modal.Title>{event ? 'Modifier l\'événement' : 'Ajouter un événement'}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {error && <div className="alert alert-danger">{error}</div>}
         <Form onSubmit={handleSubmit}>
           <Form.Group controlId="formTitle">
-            <Form.Label>Titre de l'évènement</Form.Label>
+            <Form.Label>Titre</Form.Label>
             <Form.Control
               type="text"
               name="title"
@@ -115,17 +117,16 @@ const EventModal = ({ show, handleClose, fetchEvents }) => {
               required
             />
           </Form.Group>
-
           <Form.Group controlId="formDescription">
             <Form.Label>Description</Form.Label>
             <Form.Control
               as="textarea"
+              rows={3}
               name="description"
               value={formData.description}
               onChange={handleChange}
             />
           </Form.Group>
-
           <Form.Group controlId="formDate">
             <Form.Label>Date</Form.Label>
             <Form.Control
@@ -135,7 +136,6 @@ const EventModal = ({ show, handleClose, fetchEvents }) => {
               onChange={handleChange}
             />
           </Form.Group>
-
           <Form.Group controlId="formStartTime">
             <Form.Label>Heure de début</Form.Label>
             <Form.Control
@@ -145,7 +145,6 @@ const EventModal = ({ show, handleClose, fetchEvents }) => {
               onChange={handleChange}
             />
           </Form.Group>
-
           <Form.Group controlId="formEndTime">
             <Form.Label>Heure de fin</Form.Label>
             <Form.Control
@@ -155,67 +154,6 @@ const EventModal = ({ show, handleClose, fetchEvents }) => {
               onChange={handleChange}
             />
           </Form.Group>
-
-          <Form.Group controlId="formLocationAddress">
-            <Form.Label>Adresse</Form.Label>
-            <Form.Control
-              type="text"
-              name="address"
-              value={formData.location.address}
-              onChange={handleLocationChange}
-            />
-          </Form.Group>
-
-          <Form.Group controlId="formLocationLatitude">
-            <Form.Label>Latitude</Form.Label>
-            <Form.Control
-              type="number"
-              name="latitude"
-              value={formData.location.latitude}
-              onChange={handleLocationChange}
-            />
-          </Form.Group>
-
-          <Form.Group controlId="formLocationLongitude">
-            <Form.Label>Longitude</Form.Label>
-            <Form.Control
-              type="number"
-              name="longitude"
-              value={formData.location.longitude}
-              onChange={handleLocationChange}
-            />
-          </Form.Group>
-
-          <Form.Group controlId="formImages">
-            <Form.Label>Images</Form.Label>
-            <Form.Control
-              type="file"
-              name="images"
-              multiple
-              onChange={handleImagesChange}
-            />
-          </Form.Group>
-
-          <Form.Group controlId="formEventOrganizer">
-            <Form.Label>Organisateur</Form.Label>
-            <Form.Control
-              type="text"
-              name="eventOrganizer"
-              value={formData.eventOrganizer}
-              onChange={handleChange}
-            />
-          </Form.Group>
-
-          <Form.Group controlId="formNotes">
-            <Form.Label>Notes</Form.Label>
-            <Form.Control
-              as="textarea"
-              name="notes"
-              value={formData.notes}
-              onChange={handleChange}
-            />
-          </Form.Group>
-
           <Form.Group controlId="formCategory">
             <Form.Label>Catégorie</Form.Label>
             <Form.Control
@@ -225,9 +163,48 @@ const EventModal = ({ show, handleClose, fetchEvents }) => {
               onChange={handleChange}
             />
           </Form.Group>
-
+          <Form.Group controlId="formOrganizer">
+            <Form.Label>Organisateur</Form.Label>
+            <Form.Control
+              type="text"
+              name="eventOrganizer"
+              value={formData.eventOrganizer}
+              onChange={handleChange}
+            />
+          </Form.Group>
+          <Form.Group controlId="formNotes">
+            <Form.Label>Notes</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={3}
+              name="notes"
+              value={formData.notes}
+              onChange={handleChange}
+            />
+          </Form.Group>
+          <Form.Group controlId="formImages">
+            <Form.Label>Images</Form.Label>
+            <Form.Control
+              type="file"
+              name="images"
+              multiple
+              onChange={handleFileChange}
+            />
+            {event && event.images.length > 0 && (
+              <div className="image-preview">
+                {event.images.map((image, index) => (
+                  <img
+                    key={index}
+                    src={`http://localhost:4000${image}`}
+                    alt={`Image ${index + 1}`}
+                    style={{ width: '100px', margin: '5px' }}
+                  />
+                ))}
+              </div>
+            )}
+          </Form.Group>
           <Button variant="primary" type="submit">
-            Ajouter
+            {event ? 'Mettre à jour' : 'Ajouter'}
           </Button>
         </Form>
       </Modal.Body>
