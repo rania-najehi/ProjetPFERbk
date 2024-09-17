@@ -4,7 +4,7 @@
   flex-wrap: wrap; /* Permet aux cartes de passer à la ligne suivante si elles sont trop larges */
   gap: 20px; /* Espace entre les cartes */
   padding: 20px;
-  border: 2px solid hsl(234, 73%, 44%); /* Bordure autour de l'ensemble des cartes */
+  border: 2px solid hsl(320, 74%, 49%); /* Bordure autour de l'ensemble des cartes */
   border-radius: 10px; /* Coins arrondis */
   background-color: #f9f9f9; /* Couleur de fond */
   margin-left: 100px; /* Ajustez la marge gauche pour compenser la largeur de la sidebar */
@@ -69,4 +69,67 @@
 
 .card-buttons .btn-primary:hover {
   background-color: #0056b3; /* Couleur bleue plus prononcée au survol */
+}
+.details-button {
+  width: 40px; /* Adjust width */
+  height: 30px; /* Adjust height */
+  border-radius: 20%; /* Make it round */
+  padding: 0; /* Remove padding */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.event-details {
+  margin-top: 1rem;
+}
+.details-button {
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.card-buttons {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.5rem;
+}
+.event-card-body {
+  padding: 1rem;
+}
+.card-img {
+  height: 100%;
+  object-fit: cover;
+}
+.card-img-container {
+  height: 150px; /* Ajuste selon tes besoins */
+  overflow: hidden;
+}
+.event-card {
+  position: relative;
+}
+.card-buttons {
+  display: flex;
+  padding: 0.5rem;
+}
+
+.event-card-title{
+  color: rgb(30, 255, 0); /* Couleur du titre */
+  font-size: 1.25rem; /* Taille du titre */
+  font-style: italic; /* Police en italique */
+}
+
+.event-card-date {
+  font-size: 0.875rem; /* Taille de la date */
+  color: #e71111; /* Couleur de la date (optionnelle) */
+  font-style: italic; /* Police en italique */
+}
+
+
+.event-details {
+  font-style: italic; /* Police en italique pour les détails */
+}
+.card-img-container {
+  margin-bottom: 1rem; /* Ajoute de l'espace sous l'image */
 }

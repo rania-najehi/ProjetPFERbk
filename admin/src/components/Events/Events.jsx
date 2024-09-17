@@ -7,16 +7,17 @@ import "./events.css";
 
 const Events = () => {
   const [events, setEvents] = useState([]);
-  const [filteredEvents, setFilteredEvents] = useState([]); // État pour les événements filtrés
+  const [filteredEvents, setFilteredEvents] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [visibleEventId, setVisibleEventId] = useState(null); // New state for toggling details view
 
   const fetchEvents = async () => {
     try {
       const response = await axios.get('http://127.0.0.1:4000/api/v1/event/events');
       setEvents(response.data);
-      setFilteredEvents(response.data); // Initialise les événements filtrés
+      setFilteredEvents(response.data);
     } catch (error) {
       console.error('Erreur lors de la récupération des événements', error);
     }
@@ -26,21 +27,18 @@ const Events = () => {
     fetchEvents();
   }, []);
 
-  // Filtrer les événements en fonction du terme de recherche
   const handleSearchChange = (e) => {
     const value = e.target.value.toLowerCase();
     setSearchTerm(value);
-    
     const filtered = events.filter(event =>
-      event.title.toLowerCase().includes(value) || // Vérifie si le titre contient le terme de recherche
-      event.category.toLowerCase().includes(value) // Vérifie si la description contient le terme de recherche
+      event.title.toLowerCase().includes(value) ||
+      event.category.toLowerCase().includes(value)
     );
-    setFilteredEvents(filtered); // Met à jour la liste des événements affichés
+    setFilteredEvents(filtered);
   };
 
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    // Pas besoin d'une soumission spéciale puisque le filtrage est déjà fait dans handleSearchChange
+  const handleViewDetails = (eventId) => {
+    setVisibleEventId(visibleEventId === eventId ? null : eventId); // Toggle visibility
   };
 
   const handleShow = () => setShowModal(true);
@@ -86,7 +84,7 @@ const Events = () => {
             </svg>
           </Button>
         </div>
-        <Form onSubmit={handleSearchSubmit} className="search-form">
+        <Form onSubmit={(e) => e.preventDefault()} className="search-form">
           <Form.Control
             type="text"
             placeholder="Catégorie"
@@ -100,10 +98,11 @@ const Events = () => {
         </Form>
       </div>
 
-      {/* Utilise filteredEvents au lieu de events */}
       <EventCardList
         events={filteredEvents}
         onDelete={handleDelete}
+        onViewDetails={handleViewDetails}
+        visibleEventId={visibleEventId} // Pass visibleEventId to the EventCardList
         onUpdate={(event) => {
           setSelectedEvent(event);
           handleShow();
