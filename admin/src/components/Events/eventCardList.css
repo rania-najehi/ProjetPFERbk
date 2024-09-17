@@ -121,9 +121,10 @@
 }
 
 .event-card-date {
-  font-size: 0.875rem; /* Taille de la date */
-  color: #e71111; /* Couleur de la date (optionnelle) */
+  font-size: x-small; /* Taille de la date */
+  color: #474646; /* Couleur de la date (optionnelle) */
   font-style: italic; /* Police en italique */
+  margin-bottom: 1rem;
 }
 
 
@@ -131,5 +132,5 @@
   font-style: italic; /* Police en italique pour les détails */
 }
 .card-img-container {
-  margin-bottom: 1rem; /* Ajoute de l'espace sous l'image */
+  margin-bottom: 2rem; /* Ajoute de l'espace sous l'image */
 }
