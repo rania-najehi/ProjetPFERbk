@@ -1,37 +1,55 @@
 import ConcertEvent from "../models/events.js";
+
 import path from "path";
 import fs from "fs";
-import { fileURLToPath } from "url";
+import { catchAsyncErrors } from "../middlewares/catchAsyncErrors.js";
+import ErrorHandler, {
+} from "../middlewares/errorMiddleware.js";
 
-import multer from 'multer';
+
 
 const UPLOADS_DIR = path.resolve('path', 'to', 'your', 'uploads'); // Update this path
 
 
 
 // Create Event (POST /events)
-export const createEvent = async (req, res) => {
-  try {
-    // Collect all form data
-    const newEvent = new ConcertEvent({
-      ...req.body, // Spread operator to include all form data
-      images: [], // Initialize images array
-    });
+export const createEvent = catchAsyncErrors(async (req, res, next) => {
+  // Valider les champs requis dans la requête
+  const { title, description, date, startTime, endTime, category, eventOrganizer, notes } = req.body;
 
-    // Check if multiple files are uploaded
-    if (req.files && req.files.length > 0) {
-      req.files.forEach(file => {
-        newEvent.images.push(`/uploads/${file.filename}`);
-      });
-    }
-
-    // Save the event with images
-    await newEvent.save();
-    res.status(201).json(newEvent);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+  if (!title || !description || !date || !startTime || !endTime || !category || !eventOrganizer,notes) {
+    return next(new ErrorHandler("Veuillez remplir tous les champs obligatoires.", 400));
   }
-};
+
+  // Créer un nouvel événement
+  const newEvent = new ConcertEvent({
+    ...req.body, // Inclure tous les champs du formulaire
+    images: [], // Initialiser un tableau d'images vide
+  });
+
+  // Vérifier si des fichiers sont téléchargés
+  if (req.files && req.files.length > 0) {
+    req.files.forEach(file => {
+      // Ajouter les fichiers téléchargés au tableau d'images
+      newEvent.images.push(`/uploads/${file.filename}`);
+    });
+  }
+
+  try {
+    // Sauvegarder le nouvel événement
+    await newEvent.save();
+
+    // Renvoyer une réponse de succès avec l'événement créé
+    res.status(201).json({
+      success: true,
+      message: "Événement créé avec succès",
+      event: newEvent,
+    });
+  } catch (error) {
+    // Si une erreur se produit, la renvoyer avec un message explicite
+    return next(new ErrorHandler("Erreur lors de la création de l'événement. Veuillez réessayer.", 500));
+  }
+});
 
 // Get Events (GET /events)
 export const getEvents = async (req, res) => {

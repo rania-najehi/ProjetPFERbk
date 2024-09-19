@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const EventModal = ({ show, handleClose, fetchEvents, event }) => {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    date: '',
-    startTime: '',
-    endTime: '',
+       endTime: '',
     category: '',
     eventOrganizer: '',
     notes: '',
@@ -86,17 +85,21 @@ const EventModal = ({ show, handleClose, fetchEvents, event }) => {
             'Content-Type': 'multipart/form-data',
           },
         });
+        toast.success('Événement mis à jour avec succès');
       } else {
         await axios.post('http://127.0.0.1:4000/api/v1/event/events', formDataToSend, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
         });
+        toast.success('Événement ajouté avec succès');
       }
       fetchEvents();
       handleClose();
     } catch (error) {
-      console.error('Erreur lors de la soumission du formulaire', error);
+      toast.error(
+        error.response?.data?.message || 'Erreur lors de la soumission du formulaire'
+      );
     }
   };
 

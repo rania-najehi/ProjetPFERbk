@@ -6,10 +6,11 @@
   padding: 20px;
   border: 2px solid hsl(320, 74%, 49%); /* Bordure autour de l'ensemble des cartes */
   border-radius: 10px; /* Coins arrondis */
-  background-color: #f9f9f9; /* Couleur de fond */
+  background-color: hwb(0 100% 0%); /* Couleur de fond */
   margin-left: 100px; /* Ajustez la marge gauche pour compenser la largeur de la sidebar */
   margin-top: 50px; 
   margin-right: 90px;
+
 }
 
 .event-card {
@@ -19,7 +20,7 @@
   margin: 10px; /* Espace entre les cartes */
   border: 1px solid #ddd; /* Bordure des cartes */
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Effet de transition pour le survol */
-  
+
   display: flex;
   flex-direction: column; /* Disposer les éléments de la carte verticalement */
   justify-content: space-between; /* Mettre les boutons en bas */
@@ -40,11 +41,12 @@
 
 .event-card-body {
   flex-grow: 1; /* Remplir l'espace restant pour pousser les boutons en bas */
+
 }
 
 .event-card:hover {
   transform: translateY(-10px) scale(1.05); /* Déplacer la carte vers le haut et agrandir légèrement */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Ajout d'une ombre plus prononcée */
+  box-shadow: 0 8px 16px hwb(130 4% 45% / 0.2); /* Ajout d'une ombre plus prononcée */
 }
 
 .card-buttons {
@@ -67,9 +69,7 @@
   background-color: #ff4d4f; /* Couleur rouge plus prononcée au survol */
 }
 
-.card-buttons .btn-primary:hover {
-  background-color: #0056b3; /* Couleur bleue plus prononcée au survol */
-}
+
 .details-button {
   width: 40px; /* Adjust width */
   height: 30px; /* Adjust height */
@@ -116,7 +116,7 @@
 
 .event-card-title{
   color: rgb(30, 255, 0); /* Couleur du titre */
-  font-size: 1.25rem; /* Taille du titre */
+  font-size: 1rem; /* Taille du titre */
   font-style: italic; /* Police en italique */
 }
 

@@ -14,7 +14,7 @@ const EventCard = ({ event, onDelete, onUpdate }) => {
   // Shorten the description if necessary
   const getShortDescription = (description) => {
     if (!description) return 'Description not available';
-    return description.length > 50 ? description.substring(0, 50) + '...' : description;
+    return description.length > 55 ? description.substring(0, 55) + '...' : description;
   };
 
   return (
@@ -24,6 +24,9 @@ const EventCard = ({ event, onDelete, onUpdate }) => {
         <Card.Title className="event-card-title" style={{ color: 'red', fontSize: '1.5rem', fontStyle: 'italic' }}>
           {event.title || 'No title available'}
         </Card.Title>
+        <Card.Subtitle className="mb-2 text-muted">
+          {new Date(event.createdAt).toLocaleDateString()}
+        </Card.Subtitle>
 
       
 
