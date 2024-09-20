@@ -170,7 +170,7 @@ export const createRoom = async function (req, res) {
   try {
     const commonRooms = await Room.findOne({
       users: {
-        $all: [req.params.user1, req.params.user2],
+        $all: [req.params.user1, user2],
         $size: 2,
       },
     });

@@ -15,7 +15,13 @@ export const isAdminAuthenticated = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("Dashboard User is not authenticated!", 400));
   }
   const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-  req.user = await User.findById(decoded.id);
+  req.user = await User.findById(decoded.id).populate({
+    path: "rooms",
+    populate: {
+      path: "users",
+      model: "User",
+    },
+  });
   if (req.user.role !== "Admin") {
     return next(
       new ErrorHandler(
@@ -26,10 +32,6 @@ export const isAdminAuthenticated = catchAsyncErrors(async (req, res, next) => {
   }
   next();
 });
-
-
-
-
 
 // Middleware to authenticate frontend users
 export const isStudentAuthenticated = catchAsyncErrors(

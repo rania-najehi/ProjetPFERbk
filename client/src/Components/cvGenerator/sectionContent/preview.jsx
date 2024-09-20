@@ -18,7 +18,7 @@ import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
 const StudentPreview = () => {
   const { token } = useContext(Context);
 
-  const [studentData, setStudentData] = useState(null);
+  const [studentData, setStudentData] = useState({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -44,6 +44,9 @@ const StudentPreview = () => {
   // if (loading) {
   //   return <p>Loading...</p>;
   // }
+  if (loading) {
+    return <div className="loader2"></div>;
+  }
 
   if (!studentData) {
     return <p>No data available</p>;

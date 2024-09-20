@@ -54,13 +54,14 @@ const AllSections = () => {
   const navigate = useNavigate();
   return (
     <UserProvider>
-      <Container sx={{ p: 4 }} display="flex" disableGutters={false}>
+      <Container sx={{ p: 5 }} display="flex" disableGutters={false}>
         <Box
+          width={1000}
           sx={{
             backgroundColor: "white",
             boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)", // Shadow settings
             p: 2, // Padding
-            mb: 2,
+            mb: 1,
             borderRadius: 2, // Border radius
           }}
         >
@@ -148,7 +149,7 @@ const AllSections = () => {
             so take the time to fill out the details
           </Typography> */}
         </Box>
-        <Box>
+        <Box width={1000}>
           {sections.map((section) => (
             <OneSection key={section.id} section={section} />
           ))}

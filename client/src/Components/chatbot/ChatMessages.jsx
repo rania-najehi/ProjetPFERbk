@@ -24,6 +24,9 @@ const ChatMessages = ({
   fileInputRef,
   handleFileChange,
 }) => {
+  console.log("====================================");
+  console.log("chat", chat);
+  console.log("====================================");
   const messageWrapRef = useRef(null);
   console.log("file preview", filePreview);
   //   const messageInputRef = useRef(null);
@@ -73,7 +76,7 @@ const ChatMessages = ({
                   <div className="avatar_date">
                     <img
                       className="avatar_chat"
-                      src={message.sender.studentAvatar}
+                      src={`http://localhost:4000/uploads/${message.sender.studentAvatar}`}
                       alt={index}
                     />
                     <p className="chat_date">

@@ -60,7 +60,7 @@ const SideBar = () => {
   };
 
   const gotoJobPage = () => {
-    navigateTo("/job");
+    navigateTo("/dashboard/jobOffer");
     setCollapsed(true);
   };
 

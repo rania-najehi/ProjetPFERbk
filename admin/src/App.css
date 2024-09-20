@@ -3,25 +3,25 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  /* overflow-x: hidden; */
+
   font-family: "Montserrat", sans-serif;
 }
 body {
   background: #3939d9f2;
 }
-.container {
-  padding: 0 100px;
-}
 @media (max-width: 700px) {
   .container {
     padding: 0 20px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 .page {
-  margin-left: 120px;
   background: #eff4ef;
-  padding: 40px;
   height: 100vh;
+  padding: 20px;
 }
 @media (max-width: 1208px) {
   .page {
@@ -30,9 +30,6 @@ body {
   }
 }
 @media (max-width: 485px) {
-  .page {
-    padding: 40px 20px;
-  }
 }
 @media (max-width: 460px) {
   .logo {
@@ -505,4 +502,46 @@ input[type="time"]:before {
   content: attr(placeholder);
   color: #444;
   margin-right: 0.5em;
+}
+/* HTML: <div class="loader2"></div> */
+.loader2 {
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  transform: translate(50%, -50%);
+  display: inline-grid;
+  width: 80px;
+  aspect-ratio: 1;
+}
+.loader2:before,
+.loader2:after {
+  content: "";
+  grid-area: 1/1;
+  border-radius: 50%;
+  animation: l3-0 2s alternate infinite ease-in-out;
+}
+.loader2:before {
+  margin: 25%;
+  background: repeating-conic-gradient(#ff007b 0 60deg, #8436a1 0 120deg);
+  translate: 0 50%;
+  rotate: -150deg;
+}
+.loader2:after {
+  padding: 10%;
+  margin: -10%;
+  background: repeating-conic-gradient(#8436a1 0 30deg, #ff007b 0 60deg);
+  mask: linear-gradient(#0000 50%, #000 0) content-box exclude,
+    linear-gradient(#0000 50%, #000 0);
+  rotate: -75deg;
+  animation-name: l3-1;
+}
+@keyframes l3-0 {
+  to {
+    rotate: 150deg;
+  }
+}
+@keyframes l3-1 {
+  to {
+    rotate: 75deg;
+  }
 }

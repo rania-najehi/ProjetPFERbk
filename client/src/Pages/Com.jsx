@@ -125,7 +125,7 @@ const Community = () => {
           "& .MuiInputLabel-root.Mui-focused": { color: "#ff007b" },
         }}
       />
-      <Typography variant="h3" component="h5">
+      <Typography variant="h5" component="h6">
         Your Connections
       </Typography>
       <Grid container spacing={3}>
@@ -153,10 +153,12 @@ const Community = () => {
           count={totalPagesconn}
           page={currentPageconn}
           onChange={handleChangePageconn}
-          color="primary"
+          sx={{
+            color: "#ff007b",
+          }}
         />
       </Box>
-      <Typography variant="h3" component="h5">
+      <Typography variant="h5" component="h6">
         Community to connect
       </Typography>
       <Grid container spacing={3}>
@@ -183,9 +185,9 @@ const Community = () => {
           count={totalPages}
           page={currentPage}
           onChange={handleChangePage}
-          color="primary"
-          showFirstButton // Show first page button
-          showLastButton // Show last page button
+          sx={{
+            color: "#ff007b",
+          }}
         />
       </Box>
     </Box>

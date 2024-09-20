@@ -253,7 +253,7 @@ const Projects = () => {
         <Button
           variant="contained"
           sx={{
-            fontSize: 20,
+            fontSize: 13,
             bgcolor: "#ff007b",
             "&:hover": {
               bgcolor: "white", // Background color on hover

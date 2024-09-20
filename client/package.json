@@ -36,6 +36,7 @@
     "juice": "^10.0.0",
     "mdb-react-ui-kit": "^8.0.0",
     "moment": "^2.30.1",
+    "mui-file-input": "^6.0.0",
     "pdfjs-dist": "^4.6.82",
     "pdfmake": "^0.2.10",
     "prop-types": "^15.8.1",

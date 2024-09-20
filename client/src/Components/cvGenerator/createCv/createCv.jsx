@@ -15,35 +15,6 @@ function CreateCv() {
   const [binaryImg, setBinaryImg] = useState("");
   const printRef = useRef();
   const { token } = useContext(Context);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("http://localhost:4000/getSections", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setData(response.data);
-        if (
-          response.data &&
-          response.data.user &&
-          response.data.user.studentAvatar
-        ) {
-          const avatarBase64 = await convertImageToBase64(
-            `http://localhost:4000/uploads/${response.data.user.studentAvatar}`
-          );
-          setBinaryImg(avatarBase64);
-        }
-      } catch (error) {
-        console.error("Error fetching the data", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
   const convertImageToBase64 = (url) => {
     return axios
       .get(url, {
@@ -60,6 +31,44 @@ function CreateCv() {
         });
       });
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:4000/getSections", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log("====================================");
+        console.log("data cv", response.data);
+        console.log("====================================");
+        setData(response.data);
+        if (
+          response.data &&
+          response.data.user &&
+          response.data.user.studentAvatar
+        ) {
+          const avatarBase64 = await convertImageToBase64(
+            `http://localhost:4000/uploads/${response.data.user.studentAvatar}`
+          );
+          console.log("====================================");
+          console.log("avatarBase64", avatarBase64);
+          console.log("====================================");
+          setBinaryImg(avatarBase64);
+        }
+      } catch (error) {
+        console.error("Error fetching the data", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+  if (loading) {
+    return <div className="loader2"></div>;
+  }
 
   return (
     <Container maxWidth={false} sx={{ p: 3 }}>

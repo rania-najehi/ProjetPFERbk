@@ -24,8 +24,8 @@ const OneSection = ({ section, user }) => {
 
   return (
     <Accordion
-      elevation={5}
-      sx={{ marginBottom: 5, bgcolor: "#ff007b", padding: 2, borderRadius: 2 }}
+      elevation={2}
+      sx={{ marginBottom: 3, bgcolor: "#ff007b", padding: 1, borderRadius: 2 }}
     >
       <AccordionSummary
         expandIcon={<ExpandMoreIcon sx={{ color: "#fff", fontSize: 30 }} />}

@@ -1,8 +1,16 @@
 import React from "react";
-import { Card, CardHeader, CardContent, Typography } from "@mui/material";
+import {
+  Card,
+  Button,
+  CardHeader,
+  CardContent,
+  Typography,
+} from "@mui/material";
 import { EventOutlined } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 const TopEventsCard = () => {
+  const navigate = useNavigate();
   return (
     <Card className="card_dash">
       <CardHeader title="Top Events" titleTypographyProps={{ variant: "h6" }} />
@@ -17,6 +25,14 @@ const TopEventsCard = () => {
           <EventOutlined className="icon_dash" /> SXSW
         </Typography>
       </CardContent>
+      <div className="card-footer_dash">
+        <Button
+          variant="contained"
+          onClick={() => navigate("/dashboard/event")}
+        >
+          See more
+        </Button>
+      </div>
     </Card>
   );
 };

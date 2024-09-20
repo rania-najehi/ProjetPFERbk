@@ -5,7 +5,6 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Context } from "../../main";
-import { socket } from "../../helpers/socket.js";
 
 const Login = () => {
   const { token, setToken } = useContext(Context);
