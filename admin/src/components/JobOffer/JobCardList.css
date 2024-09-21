@@ -1,0 +1,51 @@
+.job-card-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .job-card {
+    width: 100%;
+    max-width: 300px;
+    margin: 1rem auto;
+  }
+  
+  .job-card-body {
+    padding: 1rem;
+  }
+  
+  .job-card-title {
+    color: blue;
+    font-size: 1.5rem;
+    font-style: italic;
+  }
+  
+  .card-img-container {
+    margin-bottom: 1rem;
+  }
+  
+  .job-card-img {
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  .job-details {
+    margin-top: 1rem;
+  }
+  
+  .details-button-wrapper {
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
+  .details-button {
+    font-size: 1.25rem;
+  }
+  
+  .card-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    padding: 0.5rem;
+  }
+  

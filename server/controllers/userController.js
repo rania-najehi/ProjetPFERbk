@@ -138,6 +138,7 @@ export const login = catchAsyncErrors(async (req, res, next) => {
   }
 
   const user = await User.findOne({ email }).select("+password");
+  console.log("hello user",user.status);
   if (!user) {
     return next(new ErrorHandler("Mot De Passe Or Email Invalides.", 400));
   }

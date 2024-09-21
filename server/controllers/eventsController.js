@@ -1,8 +1,145 @@
-import Event from "../models/events.js";
+import ConcertEvent from "../models/events.js";
+
 import path from "path";
 import fs from "fs";
-import { fileURLToPath } from "url";
+import { catchAsyncErrors } from "../middlewares/catchAsyncErrors.js";
+import ErrorHandler, {
+} from "../middlewares/errorMiddleware.js";
 
+
+
+const UPLOADS_DIR = path.resolve('path', 'to', 'your', 'uploads'); // Update this path
+
+
+
+// Create Event (POST /events)
+export const createEvent = catchAsyncErrors(async (req, res, next) => {
+  // Valider les champs requis dans la requête
+  const { title, description, date, startTime, endTime, category, eventOrganizer, notes } = req.body;
+
+  if (!title || !description || !date || !startTime || !endTime || !category || !eventOrganizer,notes) {
+    return next(new ErrorHandler("Veuillez remplir tous les champs obligatoires.", 400));
+  }
+
+  // Créer un nouvel événement
+  const newEvent = new ConcertEvent({
+    ...req.body, // Inclure tous les champs du formulaire
+    images: [], // Initialiser un tableau d'images vide
+  });
+
+  // Vérifier si des fichiers sont téléchargés
+  if (req.files && req.files.length > 0) {
+    req.files.forEach(file => {
+      // Ajouter les fichiers téléchargés au tableau d'images
+      newEvent.images.push(`/uploads/${file.filename}`);
+    });
+  }
+
+  try {
+    // Sauvegarder le nouvel événement
+    await newEvent.save();
+
+    // Renvoyer une réponse de succès avec l'événement créé
+    res.status(201).json({
+      success: true,
+      message: "Événement créé avec succès",
+      event: newEvent,
+    });
+  } catch (error) {
+    // Si une erreur se produit, la renvoyer avec un message explicite
+    return next(new ErrorHandler("Erreur lors de la création de l'événement. Veuillez réessayer.", 500));
+  }
+});
+
+// Get Events (GET /events)
+export const getEvents = async (req, res) => {
+  try {
+    // Retrieve all events from the database
+    const events = await ConcertEvent.find();
+
+    // Return the events in the response
+    res.status(200).json(events);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Update Event (PUT /events/:id)
+export const updateEvent = async (req, res) => {
+  const { id } = req.params;
+
+  const eventUpdates = req.body; // Capture all form data for update
+
+  if (req.files && req.files.length > 0) {
+    eventUpdates.images = []; // Initialize images array for potential replacement
+    req.files.forEach(file => {
+      eventUpdates.images.push(`/uploads/${file.filename}`);
+    });
+  }
+
+  try {
+    const updatedEvent = await ConcertEvent.findByIdAndUpdate(id, eventUpdates, { new: true, runValidators: true });
+    if (!updatedEvent) {
+      return res.status(404).json({ message: 'Event not found' });
+    }
+    res.status(200).json(updatedEvent);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+// Delete Event (DELETE /events/:id)
+export const deleteEvent = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deletedEvent = await ConcertEvent.findByIdAndDelete(id);
+    if (!deletedEvent) {
+      return res.status(404).json({ message: 'Event not found' });
+    }
+
+    // Delete associated images from the 'uploads' directory
+    if (deletedEvent.images.length > 0) {
+      deletedEvent.images.forEach((image) => {
+        const imagePath = path.join(UPLOADS_DIR, path.basename(image));
+        if (fs.existsSync(imagePath)) {
+          fs.unlinkSync(imagePath);
+        }
+      });
+    }
+
+    res.status(200).json({ message: 'Event deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+
+
+// Get Events by Category (GET /events/category/:category)
+export const getEventsByCategory = async (req, res) => {
+  const { category } = req.params;
+
+  try {
+    // Recherche des événements correspondant à la catégorie
+    const events = await ConcertEvent.find({ category: category });
+    res.status(200).json(events);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+
+
+
+
+
+
+
+
+/*
 // Properly define __dirname
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -23,19 +160,11 @@ const handleFileUpload = (file) => {
 // Create Event
 export const createEvent = async (req, res) => {
   try {
-    const imageUrl = req.file ? await handleFileUpload(req.file) : null;
-
-    const eventData = {
-      ...req.body,
-      image: imageUrl,
-    };
-
-    const event = new Event(eventData);
-    await event.save();
-    res.status(201).send(event);
+    const newEvent = new Event(req.body); // Use Event model instead of EventForm
+    await newEvent.save();
+    res.status(201).json(newEvent);
   } catch (error) {
-    console.log(error);
-    res.status(400).send(error);
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -118,4 +247,4 @@ export const deleteEvent = async (req, res) => {
     console.log(error);
     res.status(500).send(error);
   }
-};
+};*/

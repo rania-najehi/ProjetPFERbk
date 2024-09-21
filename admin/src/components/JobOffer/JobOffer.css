@@ -1,72 +1,58 @@
-.job-offer-container {
-    width: 80%;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #2261df;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.job-offer-container form {
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.job-offer-container form input,
-.job-offer-container form textarea,
-.job-offer-container form select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #1428be;
-    border-radius: 5px;
-}
-
-.job-offer-container form button {
+.add-event-btn {
+    position: absolute;
+    right: 60px; /* Positionne le bouton à 60px du bord droit */
+    bottom: 527px; /* Positionne le bouton à 20px du bord inférieur */
+    /* Ajustez 'bottom' pour le positionner plus haut ou plus bas selon vos besoins */
+  }
+  .add-job-btn{
+    position: absolute;
+    right: 60px; /* Positionne le bouton à 60px du bord droit */
+    bottom: 527px;
+  }
+  .add-job-btn button {
+    background-color: hsl(240, 11%, 95%);
+    border-color: rgb(15, 19, 223);
+    color: rgb(15, 19, 223);
+    font-weight: bold;
     padding: 10px 20px;
-    border: none;
-    background-color: #007bff;
-    color: rgb(35, 21, 157);
     border-radius: 5px;
-    cursor: pointer;
-}
-
-.job-offer-container form button:hover {
-    background-color: #0056b3;
-}
-
-.job-list {
+    margin-top: 50px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .add-job-btn button:hover {
+    background-color: hwb(310 45% 7%);
+    border-color: #0056b3;
+  }
+  .job-card-list {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  .job-card {
+    width: 30%; /* Ajustez la largeur des cartes */
+    margin-bottom: 20px;
+  }
+  
+  .job-details {
+    margin-top: 15px;
+  }
+  .job-offers-controls {
+    display: flex;
+    justify-content: flex-end; /* Aligne les éléments vers la droite */
+    padding-right: 20px; /* Ajoute un peu d'espace à droite si nécessaire */
+    background-color: rgb(205, 202, 207);
+  }
 
-.job-card {
-    padding: 15px;
-    background-color: rgb(34, 28, 214);
-    border: 1px solid #db0707;
-    border-radius: 5px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+.btn-svg-right {
+  margin-left: auto; /* Déplace le bouton tout à droite */
 }
-
-.job-card h3 {
-    margin: 0 0 10px;
+.search-input{
+  width: 300px !important; /* Force la réduction de la largeur de l'input */
+  margin-right: 10px; /* Espace entre l'input et le bouton */
+  max-width: none; /* Empêche que la largeur max soit imposée */
 }
-
-.job-card p {
-    margin: 5px 0;
-}
-
-.job-card button {
-    margin-top: 10px;
-    padding: 5px 10px;
-    border: none;
-    background-color: #dc3545;
-    color: rgb(201, 39, 39);
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.job-card button:hover {
-    background-color: #c82333;
+.add-job-offer-btn{
+ 
 }

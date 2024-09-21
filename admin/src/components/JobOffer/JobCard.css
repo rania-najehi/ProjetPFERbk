@@ -1,0 +1,30 @@
+.card-img-container {
+    width: 100%; /* Largeur du conteneur de l'image */
+    height: 200px; /* Hauteur fixe du conteneur de l'image */
+    overflow: hidden; /* Masquer les parties de l'image qui dépassent */
+  }
+ 
+  .job-card-accordion {
+    width: 60%; /* Chaque carte prend 60% de la largeur */
+    margin: 0 auto; /* Centre les cartes horizontalement */
+    margin-bottom: 20px; /* Ajoute un espacement en bas */
+  }
+  
+  .job-card-img {
+    height: 200px; /* Ajuster la taille des images dans la carte */
+    object-fit: cover; /* Garde une bonne proportion des images */
+  }
+  .job-logo-container {
+    flex-shrink: 0; /* Empêche le conteneur du logo de se rétrécir */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .job-logo {
+    width: 10px;       /* Taille fixe de l'image */
+    height: 50px;      /* Hauteur fixe correspondante pour rendre l'image carrée */
+    border-radius: 100%; /* Rend l'image circulaire */
+    object-fit: cover;  /* Remplit l'espace sans déformer l'image */
+    border: 5px solid #ddd; /* Bordure pour l'effet avatar */
+  }

@@ -4,60 +4,49 @@ import { catchAsyncErrors } from "../middlewares/catchAsyncErrors.js";
 import ErrorHandler from "../middlewares/errorMiddleware.js";
 import asyncHandler from 'express-async-handler';
 
-
 export const createJob = catchAsyncErrors(async (req, res, next) => {
-    const { title, description, salary, location, email, jobType } = req.body;
 
-    if (!title || !description || !salary || !location || !email || !jobType) {
-        return next(new ErrorHandler("Remplir tous les champs SVP", 400));
-    }
-    if (!req.user || !req.user.id) {
-        return next(new ErrorHandler("Utilisateur non authentifié.", 401));
-    }
-    if (req.user.role !== 'Admin') {
-        return next(new ErrorHandler("Accès refusé. Vous devez être un administrateur pour créer un job.", 403));
-    }
-    try {
-        const existingJobType = await JobType.findById(jobType);
-        if (!existingJobType) {
-            return next(new ErrorHandler(`Le type d'emploi spécifié n'existe pas.`, 400));
-        }
-        const job = await Job.create({
-            title,
-            description,
-            salary,
-            location,
-            email,
-            jobType: existingJobType._id, 
-            user: req.user.id  
-        });
-        res.status(201).json({
-            success: true,
-            job
-        });
-    } catch (error) {
-        next(error);
-    }
+  const { title, description, salary, location, email, Exigences, DateLimite, responsabilites, benefices } = req.body;
+
+  if (!title || !description || !salary || !location || !email || !Exigences || !DateLimite || !responsabilites || !benefices) {
+    return next(new ErrorHandler("Remplir tous les champs SVP", 400));
+  }
+
+  const newJob = new Job({
+    ...req.body,
+    images: [],
+  });
+
+  if (req.files && req.files.length > 0) {
+    req.files.forEach(file => {
+      newJob.images.push(`/uploads/${file.filename}`); // Add file paths to the images array
+    });
+  }
+
+  try {
+    await newJob.save();
+    res.status(201).json({
+      success: true,
+      message: "Job créé avec succès",
+      event: newJob,
+    });
+  } catch (error) {
+    return next(new ErrorHandler("Erreur lors de la création de travail. Veuillez réessayer.", 500));
+  }
 });
-
 //Get All Jobs
-export const getJobs = catchAsyncErrors(async (req, res, next) => {
+export const getJobs = async (req, res, next) => {
     try {
-       
-        const jobs = await Job.find().populate('jobType user', 'jobTypeName firstName lastName email');
+             // Retrieve all job from the database
+
+        const jobs = await Job.find();
         
-        res.status(200).json({
-            success: true,
-            jobs
-        });
+            // Return the events in the response
+      res.status(200).json(jobs);
     } catch (error) {
-        next(new ErrorHandler("Une erreur s'est produite lors de la récupération des emplois", 500));
+      res.status(500).json({ message: error.message });
     }
-});
-
-
-
-
+};
 
     export const getJobsWithPagination = asyncHandler(async (req, res) => {
         const pageSize = 5; 
