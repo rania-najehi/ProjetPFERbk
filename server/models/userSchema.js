@@ -135,3 +135,40 @@ const getRandomPhoto = (photos) => {
 // };
 
 // updateUsersWithRandomPhotos();
+const seedUsers = async () => {
+  try {
+
+    const users = [
+      {
+        firstName: "John",
+        lastName: "Doe",
+        email: "jdididaoud404@gmail.com",
+        phone: "12345678",
+        password: await bcrypt.hash("jdidijdidi", 10),
+        genre: "Homme",
+        levelEnglish: "B2",
+        role: "Student",
+        studentAvatar: "http://localhost:4000/uploads/6d90f194-62e6-414a-8095-ec9348e109de.jpg",
+        
+      },
+      {
+        firstName: "Jane",
+        lastName: "Smith",
+        email: "ranya.najehi@esprit.tn",
+        phone: "87654321",
+        password: await bcrypt.hash("ranyaranya", 10),
+        genre: "Femme",
+        levelEnglish: "C1",
+        role: "Admin",
+        studentAvatar: "http://localhost:4000/uploads/a2c7690e-ee45-4286-b04c-21c03bac2a9b.jpg",
+      }
+    ];
+
+    // Insert the sample users
+    await User.insertMany(users);
+    console.log('Sample users inserted successfully');
+
+  } catch (error) {
+    console.error(`Error seeding users: ${error.message}`);
+  }
+};

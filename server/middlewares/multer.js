@@ -17,7 +17,6 @@ const storage = multer.diskStorage({
   },
 });
 
-/*
 export const upload = multer({
   storage: storage,
   limits: { fileSize: 1000000 }, // Example limit of 1MB
@@ -26,15 +25,3 @@ export const upload = multer({
   },
 });
 // .single("file");
-*/
-export const upload = multer({
-  storage: storage,
-  limits: { fileSize: 1000000 }, // Set file size limit (1MB)
-  fileFilter: function (req, file, cb) {
-    const ext = path.extname(file.originalname).toLowerCase();
-    if (ext !== ".jpg" && ext !== ".jpeg" && ext !== ".png" && ext !== ".gif") {
-      return cb(new Error("Only images are allowed"));
-    }
-    cb(null, true);
-  },
-});
