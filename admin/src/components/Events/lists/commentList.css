@@ -1,0 +1,11 @@
+.card-fixed-size {
+  width: 18rem; /* Adjust the width as needed */
+  height: 25rem; /* Adjust the height as needed */
+  overflow: hidden; /* Ensure content doesn't overflow */
+}
+
+.card-img-top {
+  width: 100%;
+  height: 12rem; /* Adjust the height as needed */
+  object-fit: cover; /* Ensures the image covers the area while maintaining aspect ratio */
+}

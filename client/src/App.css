@@ -50,3 +50,22 @@
     rotate: 75deg;
   }
 }
+.not-found-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.not-found-header {
+  font-size: 3em;
+  color: #333;
+  margin-bottom: 1em;
+}
+
+.not-found-message {
+  font-size: 1.2em;
+  color: #666;
+}

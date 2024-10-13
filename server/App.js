@@ -9,6 +9,8 @@ import studentRouter from "./routes/userRouter.js";
 import appointmentRouter from "./routes/appointmentRouter.js";
 import jobRouter from "./routes/jobRouter.js";
 import chatRouter from "./routes/chatRouter.js";
+import eventComment from "./routes/eventAndCommentRoutes.js";
+
 import {
   updateSectionRecords,
   getAllUserSections,
@@ -23,6 +25,7 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const app = express();
+
 app.use(express.json());
 app.use(urlencoded({ extended: true }));
 config({ path: "./config/config.env" });
@@ -48,7 +51,8 @@ app.use(
     ].join(" ");
   })
 );
-
+dbConnection();
+// import "./models/seeds.js";
 app.use(urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
@@ -66,8 +70,8 @@ app.get("/getSections", isStudentAuthenticated, getAllUserSections);
 
 app.use("/api/v1/event", eventRouter);
 app.use("/api/v1/graduation", graduationRouter);
+app.use("/api/v1/comment", eventComment);
 
-dbConnection();
 app.use(errorMiddleware);
 
 export default app;

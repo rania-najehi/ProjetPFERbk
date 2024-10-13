@@ -119,6 +119,7 @@ const Skills = () => {
     updateUserRecord({
       records: [{ technicalSkills, softSkills, languages }],
       section: "Skill",
+      token: token,
     });
   };
   const getAllUserRecords = async () => {
@@ -131,9 +132,15 @@ const Skills = () => {
       console.log("====================================");
       console.log(response.data);
       console.log("====================================");
-      setSoftSkills(response.data.skills.softSkills);
-      setTechnicalSkills(response.data.skills.technicalSkills);
-      setLanguages(response.data.skills.languages);
+      response.data.skills?.softSkills
+        ? setSoftSkills(response.data.skills.softSkills)
+        : setSoftSkills([]);
+      response.data.skills?.technicalSkills
+        ? setTechnicalSkills(response.data.skills.technicalSkills)
+        : setTechnicalSkills([]);
+      response.data.skills?.languages
+        ? setLanguages(response.data.skills.languages)
+        : setLanguages([]);
     } catch (error) {
       console.error(error);
       throw error;
@@ -330,13 +337,12 @@ const Skills = () => {
         <Button
           variant="contained"
           sx={{
-            fontSize: 13,
+            fontSize: 15,
             bgcolor: "#ff007b",
             "&:hover": {
-              bgcolor: "white", // Background color on hover
-              color: "#ff007b",
+              bgcolor: "#8436a1", // Background color on hover
+              color: "white",
             },
-            mt: 5,
           }}
           onClick={openDialog}
         >

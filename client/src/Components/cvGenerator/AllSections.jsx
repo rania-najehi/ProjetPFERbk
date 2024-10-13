@@ -97,8 +97,8 @@ const AllSections = () => {
                   fontSize: 15,
                   bgcolor: "#ff007b",
                   "&:hover": {
-                    bgcolor: "white", // Background color on hover
-                    color: "#ff007b",
+                    bgcolor: "#8436a1", // Background color on hover
+                    color: "white",
                   },
                 }}
                 endIcon={
@@ -122,8 +122,8 @@ const AllSections = () => {
                   fontSize: 15,
                   bgcolor: "#ff007b",
                   "&:hover": {
-                    bgcolor: "white", // Background color on hover
-                    color: "#ff007b",
+                    bgcolor: "#8436a1", // Background color on hover
+                    color: "white",
                   },
                 }}
                 endIcon={

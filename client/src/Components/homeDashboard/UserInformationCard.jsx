@@ -68,9 +68,7 @@ const UserInformationCard = ({ user, token, getCurrentUser }) => {
         </Typography>
       </CardContent>
       <div className="card-footer_dash">
-        <Button variant="contained" onClick={handleOpen}>
-          Update Information
-        </Button>
+        <Button onClick={handleOpen}>Update Information</Button>
       </div>
       <UpdateInformationForm
         open={open}

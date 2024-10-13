@@ -54,9 +54,10 @@ const userSchema = new mongoose.Schema({
     required: true,
     enum: ["Admin", "Student"],
   },
-  isLoggedIn: { 
-    type: Boolean, default: false
-   },
+  isLoggedIn: {
+    type: Boolean,
+    default: false,
+  },
   status: {
     type: String,
     enum: ["Pending", "Accepted", "Rejected"],
@@ -82,6 +83,8 @@ const userSchema = new mongoose.Schema({
   about: {
     type: String,
   },
+  likes: [{ type: ObjectId, ref: "ConcertEvent" }],
+  ups: [{ type: ObjectId, ref: "ConcertEvent" }],
 });
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
@@ -108,7 +111,6 @@ export const User = mongoose.model("User", userSchema);
 const photos = [
   "http://localhost:4000/uploads/6d90f194-62e6-414a-8095-ec9348e109de.jpg",
   "http://localhost:4000/uploads/a2c7690e-ee45-4286-b04c-21c03bac2a9b.jpg",
-  // Add more photo URLs as needed
 ];
 
 const getRandomPhoto = (photos) => {
@@ -116,58 +118,61 @@ const getRandomPhoto = (photos) => {
   return photos[randomIndex];
 };
 
-// const updateUsersWithRandomPhotos = async () => {
-//   try {
-//     const users = await User.find();
-//     const updatePromises = users.map((user) => {
-//       const randomPhoto = getRandomPhoto(photos);
-//       return User.updateOne({ _id: user._id }, { studentAvatar: randomPhoto });
-//     });
+const updateUsersWithRandomPhotos = async () => {
+  try {
+    const users = await User.find();
+    const updatePromises = users.map((user) => {
+      const randomPhoto = getRandomPhoto(photos);
+      return User.updateOne({ _id: user._id }, { studentAvatar: randomPhoto });
+    });
 
-//     await Promise.all(updatePromises);
+    await Promise.all(updatePromises);
 
-//     console.log("All users updated with random photos");
-//   } catch (error) {
-//     console.error("Error updating users:", error);
-//   } finally {
-//     mongoose.connection.close();
-//   }
-// };
+    console.log("All users updated with random photos");
+  } catch (error) {
+    console.error("Error updating users:", error);
+  } finally {
+    mongoose.connection.close();
+  }
+};
 
 // updateUsersWithRandomPhotos();
+let usersIds = [];
 const seedUsers = async () => {
   try {
-
     const users = [
       {
-        firstName: "John",
-        lastName: "Doe",
+        firstName: "Jdidi",
+        lastName: "Daoud",
         email: "jdididaoud404@gmail.com",
         phone: "12345678",
         password: await bcrypt.hash("jdidijdidi", 10),
         genre: "Homme",
         levelEnglish: "B2",
         role: "Student",
-        studentAvatar: "http://localhost:4000/uploads/6d90f194-62e6-414a-8095-ec9348e109de.jpg",
-        
+        studentAvatar:
+          "http://localhost:4000/uploads/6d90f194-62e6-414a-8095-ec9348e109de.jpg",
       },
       {
-        firstName: "Jane",
-        lastName: "Smith",
+        firstName: "Ranya",
+        lastName: "Najehi",
         email: "ranya.najehi@esprit.tn",
         phone: "87654321",
         password: await bcrypt.hash("ranyaranya", 10),
         genre: "Femme",
         levelEnglish: "C1",
         role: "Admin",
-        studentAvatar: "http://localhost:4000/uploads/a2c7690e-ee45-4286-b04c-21c03bac2a9b.jpg",
-      }
+        studentAvatar:
+          "http://localhost:4000/uploads/a2c7690e-ee45-4286-b04c-21c03bac2a9b.jpg",
+      },
     ];
 
     // Insert the sample users
-    await User.insertMany(users);
-    console.log('Sample users inserted successfully');
-
+    const added = await User.insertMany(users);
+    usersIds = added.map((e) => {
+      e.push(e._id);
+    });
+    console.log("Sample users inserted successfully");
   } catch (error) {
     console.error(`Error seeding users: ${error.message}`);
   }

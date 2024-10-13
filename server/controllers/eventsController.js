@@ -3,35 +3,87 @@ import ConcertEvent from "../models/events.js";
 import path from "path";
 import fs from "fs";
 import { catchAsyncErrors } from "../middlewares/catchAsyncErrors.js";
-import ErrorHandler, {
-} from "../middlewares/errorMiddleware.js";
+import ErrorHandler from "../middlewares/errorMiddleware.js";
 
-
-
-const UPLOADS_DIR = path.resolve('path', 'to', 'your', 'uploads'); // Update this path
-
-
-
+const UPLOADS_DIR = path.resolve("path", "to", "your", "uploads"); // Update this path
+export const getOneEvents = catchAsyncErrors(async (req, res, next) => {
+  try {
+    const event = await ConcertEvent.findById(req.params.id)
+      .populate({
+        path: "comments",
+        model: "Comment",
+        populate: {
+          path: "sender",
+          model: "User",
+          select: "firstName lastName studentAvatar",
+        },
+      })
+      .populate({
+        path: "ups",
+        model: "User",
+        select: "firstName lastName studentAvatar",
+      })
+      .populate({
+        path: "likes",
+        model: "User",
+        select: "firstName lastName studentAvatar",
+      });
+    if (!event) {
+      return next(new ErrorHandler("Event not found", 404));
+    }
+    res.status(200).json(event);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 // Create Event (POST /events)
 export const createEvent = catchAsyncErrors(async (req, res, next) => {
-  // Valider les champs requis dans la requête
-  const { title, description, date, startTime, endTime, category, eventOrganizer, notes } = req.body;
+  console.log("req body", req.body);
 
-  if (!title || !description || !date || !startTime || !endTime || !category || !eventOrganizer,notes) {
-    return next(new ErrorHandler("Veuillez remplir tous les champs obligatoires.", 400));
+  // Valider les champs requis dans la requête
+  const {
+    title,
+    description,
+    date,
+    startTime,
+    endTime,
+    category,
+    eventOrganizer,
+    notes,
+    location,
+  } = req.body;
+
+  if (
+    !title ||
+    !description ||
+    !date ||
+    !startTime ||
+    !endTime ||
+    !category ||
+    !eventOrganizer ||
+    !notes
+  ) {
+    return next(
+      new ErrorHandler("Veuillez remplir tous les champs obligatoires.", 400)
+    );
   }
 
   // Créer un nouvel événement
   const newEvent = new ConcertEvent({
     ...req.body, // Inclure tous les champs du formulaire
+    location: {
+      address: req.body.address,
+      longitude: req.body.longitude,
+      latitude: req.body.latitude,
+    },
     images: [], // Initialiser un tableau d'images vide
   });
 
   // Vérifier si des fichiers sont téléchargés
   if (req.files && req.files.length > 0) {
-    req.files.forEach(file => {
+    req.files.forEach((file) => {
       // Ajouter les fichiers téléchargés au tableau d'images
-      newEvent.images.push(`/uploads/${file.filename}`);
+      newEvent.images.push(`${file.filename}`);
     });
   }
 
@@ -47,18 +99,52 @@ export const createEvent = catchAsyncErrors(async (req, res, next) => {
     });
   } catch (error) {
     // Si une erreur se produit, la renvoyer avec un message explicite
-    return next(new ErrorHandler("Erreur lors de la création de l'événement. Veuillez réessayer.", 500));
+    return next(
+      new ErrorHandler(
+        "Erreur lors de la création de l'événement. Veuillez réessayer.",
+        500
+      )
+    );
   }
 });
 
 // Get Events (GET /events)
 export const getEvents = async (req, res) => {
   try {
+    const page = parseInt(req.params.page) || 1;
+    const limit = parseInt(req.params.limit) || 3;
     // Retrieve all events from the database
-    const events = await ConcertEvent.find();
+    const eventsCounts = await ConcertEvent.find();
+    const events = await ConcertEvent.find()
+      .populate({
+        path: "comments",
+        model: "Comment",
+        populate: {
+          path: "sender",
+          model: "User",
+          select: "firstName lastName studentAvatar",
+        },
+      })
+      .populate({
+        path: "ups",
+        model: "User",
+        select: "firstName lastName studentAvatar",
+      })
+      .populate({
+        path: "likes",
+        model: "User",
+        select: "firstName lastName studentAvatar",
+      })
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .exec();
 
     // Return the events in the response
-    res.status(200).json(events);
+    res.status(200).json({
+      events,
+      currentPage: page,
+      totalPages: Math.ceil(eventsCounts.length / limit),
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -72,15 +158,19 @@ export const updateEvent = async (req, res) => {
 
   if (req.files && req.files.length > 0) {
     eventUpdates.images = []; // Initialize images array for potential replacement
-    req.files.forEach(file => {
+    req.files.forEach((file) => {
       eventUpdates.images.push(`/uploads/${file.filename}`);
     });
   }
 
   try {
-    const updatedEvent = await ConcertEvent.findByIdAndUpdate(id, eventUpdates, { new: true, runValidators: true });
+    const updatedEvent = await ConcertEvent.findByIdAndUpdate(
+      id,
+      eventUpdates,
+      { new: true, runValidators: true }
+    );
     if (!updatedEvent) {
-      return res.status(404).json({ message: 'Event not found' });
+      return res.status(404).json({ message: "Event not found" });
     }
     res.status(200).json(updatedEvent);
   } catch (error) {
@@ -95,7 +185,7 @@ export const deleteEvent = async (req, res) => {
   try {
     const deletedEvent = await ConcertEvent.findByIdAndDelete(id);
     if (!deletedEvent) {
-      return res.status(404).json({ message: 'Event not found' });
+      return res.status(404).json({ message: "Event not found" });
     }
 
     // Delete associated images from the 'uploads' directory
@@ -108,14 +198,11 @@ export const deleteEvent = async (req, res) => {
       });
     }
 
-    res.status(200).json({ message: 'Event deleted successfully' });
+    res.status(200).json({ message: "Event deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
-
-
-
 
 // Get Events by Category (GET /events/category/:category)
 export const getEventsByCategory = async (req, res) => {
@@ -129,15 +216,6 @@ export const getEventsByCategory = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
-
-
-
-
-
-
-
-
 
 /*
 // Properly define __dirname

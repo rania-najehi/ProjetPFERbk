@@ -1,5 +1,16 @@
 /* Sidebar container */
-.dashboard_container {
+.dashboard_container.collapsed {
+  width: 100%;
+  overflow-y: scroll;
+  width: calc(100% - 60px);
+}
+.dashboard_container:not(.collapsed) {
+  width: calc(
+    100% - 250px
+  ); /* Calculate the width of the dashboard container */
+  flex: 1;
+}
+.big_container {
   /* position: relative; */
   display: flex;
 }
@@ -10,14 +21,14 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  flex: 1;
 }
 .SideBar {
+  position: sticky;
   background-color: white; /* Pink background */
   color: #ff007b; /* White text */
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  /* align-items: flex-start; */
   gap: 5px;
   transition: all 0.7s;
   overflow: hidden;

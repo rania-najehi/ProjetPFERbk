@@ -91,7 +91,7 @@ const Resume = ({ data }) => {
         <h3>Skills</h3>
         <div>
           <h4>Technical Skills</h4>
-          {skills.technicalSkills.map((skill, index) => (
+          {skills?.technicalSkills.map((skill, index) => (
             <div className="skill_cv" key={index}>
               <span>{skill.skill}</span>
               <span>{skill.level}</span>
@@ -100,7 +100,7 @@ const Resume = ({ data }) => {
         </div>
         <div>
           <h4>Soft Skills</h4>
-          {skills.softSkills.map((skill, index) => (
+          {skills?.softSkills?.map((skill, index) => (
             <div className="skill_cv" key={index}>
               <span>{skill.skill}</span>
             </div>
@@ -108,7 +108,7 @@ const Resume = ({ data }) => {
         </div>
         <div>
           <h4>Languages</h4>
-          {skills.languages.map((language, index) => (
+          {skills?.languages.map((language, index) => (
             <div className="skill_cv" key={index}>
               <span>{language.language}</span>
               <span>{language.proficiency}</span>

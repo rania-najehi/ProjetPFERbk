@@ -31,7 +31,9 @@ export const UserProvider = ({ children }) => {
         "http://localhost:4000/updateSections",
         updatedData,
         {
-          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${updatedData.token}`,
+          },
         }
       );
       setUser(response.data.user);

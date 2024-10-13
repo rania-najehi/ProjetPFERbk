@@ -5,9 +5,11 @@ import { Outlet } from "react-router-dom";
 import "../Components/sideBar/index.css";
 const DashboardStudent = () => {
   return (
-    <div className="dashboard_container">
+    <div className="big_container">
       <Sidebar />
-      <Outlet />
+      <div className="dashboard_container">
+        <Outlet />
+      </div>
     </div>
   );
 };

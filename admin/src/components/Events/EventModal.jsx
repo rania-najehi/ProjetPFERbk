@@ -1,18 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import { Modal, Button, Form } from 'react-bootstrap';
-import axios from 'axios';
-import { toast } from 'react-toastify';
-
+import React, { useState, useEffect } from "react";
+import { Modal, Button, Form } from "react-bootstrap";
+import axios from "axios";
+import { toast } from "react-toastify";
+import LocationAdd from "./event-details/locationAdd";
 const EventModal = ({ show, handleClose, fetchEvents, event }) => {
   const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-       endTime: '',
-    category: '',
-    eventOrganizer: '',
-    notes: '',
+    title: "",
+    description: "",
+    endTime: "",
+    category: "",
+    eventOrganizer: "",
+    notes: "",
     images: [], // Pour les nouvelles images à télécharger
+    location: {
+      address: "",
+      latitude: 0,
+      longitude: 0,
+    },
   });
+  const onLocationChange = (location) => {
+    console.log("position", location);
+
+    setFormData((prevData) => ({
+      ...prevData,
+      location: {
+        ...prevData.location,
+        latitude: location[1], // Set latitude
+        longitude: location[0], // Set longitude
+        address: location[2],
+      },
+    }));
+  };
 
   useEffect(() => {
     if (event) {
@@ -23,28 +41,53 @@ const EventModal = ({ show, handleClose, fetchEvents, event }) => {
       };
 
       setFormData({
-        title: event.title || '',
-        description: event.description || '',
-        date: event.date && isValidDate(event.date) ? new Date(event.date).toISOString().split('T')[0] : '',
-        startTime: event.startTime && isValidDate(event.startTime) ? new Date(event.startTime).toISOString().split('T')[1].substring(0, 5) : '',
-        endTime: event.endTime && isValidDate(event.endTime) ? new Date(event.endTime).toISOString().split('T')[1].substring(0, 5) : '',
-        category: event.category || '',
-        eventOrganizer: event.eventOrganizer || '',
-        notes: event.notes || '',
+        title: event.title || "",
+        description: event.description || "",
+        date:
+          event.date && isValidDate(event.date)
+            ? new Date(event.date).toISOString().split("T")[0]
+            : "",
+        startTime:
+          event.startTime && isValidDate(event.startTime)
+            ? new Date(event.startTime)
+                .toISOString()
+                .split("T")[1]
+                .substring(0, 5)
+            : "",
+        endTime:
+          event.endTime && isValidDate(event.endTime)
+            ? new Date(event.endTime)
+                .toISOString()
+                .split("T")[1]
+                .substring(0, 5)
+            : "",
+        category: event.category || "",
+        eventOrganizer: event.eventOrganizer || "",
+        notes: event.notes || "",
         images: [], // Réinitialiser les images lors de l'ouverture du modal
+        location: event.location || {
+          address: "",
+          latitude: 0,
+          longitude: 0,
+        },
       });
     } else {
       // Mode ajout : réinitialiser les champs
       setFormData({
-        title: '',
-        description: '',
-        date: '',
-        startTime: '',
-        endTime: '',
-        category: '',
-        eventOrganizer: '',
-        notes: '',
+        title: "",
+        description: "",
+        date: "",
+        startTime: "",
+        endTime: "",
+        category: "",
+        eventOrganizer: "",
+        notes: "",
         images: [],
+        location: {
+          address: "",
+          latitude: 0,
+          longitude: 0,
+        },
       });
     }
   }, [event, show]); // Ajoutez show pour réinitialiser les champs lorsque le modal est affiché
@@ -66,12 +109,23 @@ const EventModal = ({ show, handleClose, fetchEvents, event }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    console.log("hello");
     const formDataToSend = new FormData();
-    Object.keys(formData).forEach(key => {
-      if (key === 'images') {
+    console.log("sommmeeeeeeeeeeeeeeeee", formData.location.address);
+
+    formDataToSend.append("address", formData.location.address);
+    formDataToSend.append("latitude", formData.location.latitude);
+
+    formDataToSend.append("longitude", formData.location.longitude);
+
+    Object.entries(formData).forEach(([key, value]) => {
+      console.log(key, value);
+      // if (key === "location") {
+
+      // }
+      if (key === "images") {
         for (let i = 0; i < formData.images.length; i++) {
-          formDataToSend.append('images', formData.images[i]);
+          formDataToSend.append("images", formData.images[i]);
         }
       } else {
         formDataToSend.append(key, formData[key]);
@@ -80,25 +134,34 @@ const EventModal = ({ show, handleClose, fetchEvents, event }) => {
 
     try {
       if (event) {
-        await axios.put(`http://127.0.0.1:4000/api/v1/event/events/${event._id}`, formDataToSend, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-        toast.success('Événement mis à jour avec succès');
+        await axios.put(
+          `http://127.0.0.1:4000/api/v1/event/events/${event._id}`,
+          formDataToSend,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        toast.success("Événement mis à jour avec succès");
       } else {
-        await axios.post('http://127.0.0.1:4000/api/v1/event/events', formDataToSend, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-        toast.success('Événement ajouté avec succès');
+        await axios.post(
+          "http://127.0.0.1:4000/api/v1/event/events",
+          formDataToSend,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        toast.success("Événement ajouté avec succès");
       }
       fetchEvents();
       handleClose();
     } catch (error) {
       toast.error(
-        error.response?.data?.message || 'Erreur lors de la soumission du formulaire'
+        error.response?.data?.message ||
+          "Erreur lors de la soumission du formulaire"
       );
     }
   };
@@ -106,7 +169,9 @@ const EventModal = ({ show, handleClose, fetchEvents, event }) => {
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>{event ? 'Modifier l\'événement' : 'Ajouter un événement'}</Modal.Title>
+        <Modal.Title>
+          {event ? "Modifier l'événement" : "Ajouter un événement"}
+        </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={handleSubmit}>
@@ -193,6 +258,10 @@ const EventModal = ({ show, handleClose, fetchEvents, event }) => {
               multiple
               onChange={handleFileChange}
             />
+            <Form.Group controlId="formNotes">
+              <Form.Label>Location</Form.Label>
+              <LocationAdd onLocationChange={onLocationChange} />
+            </Form.Group>
             {event && event.images.length > 0 && (
               <div className="image-preview">
                 {event.images.map((image, index) => (
@@ -200,14 +269,14 @@ const EventModal = ({ show, handleClose, fetchEvents, event }) => {
                     key={index}
                     src={`http://localhost:4000${image}`}
                     alt={`Image ${index + 1}`}
-                    style={{ width: '100px', margin: '5px' }}
+                    style={{ width: "100px", margin: "5px" }}
                   />
                 ))}
               </div>
             )}
           </Form.Group>
           <Button variant="primary" type="submit">
-            {event ? 'Mettre à jour' : 'Ajouter'}
+            {event ? "Mettre à jour" : "Ajouter"}
           </Button>
         </Form>
       </Modal.Body>

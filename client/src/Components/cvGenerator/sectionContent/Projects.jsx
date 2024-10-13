@@ -124,7 +124,11 @@ const Projects = () => {
   const handleUpdate = () => {
     // Handle update logic
     console.log(projects);
-    updateUserRecord({ records: projects, section: "projects" });
+    updateUserRecord({
+      records: projects,
+      section: "projects",
+      token: token,
+    });
   };
 
   return (
@@ -253,11 +257,11 @@ const Projects = () => {
         <Button
           variant="contained"
           sx={{
-            fontSize: 13,
+            fontSize: 15,
             bgcolor: "#ff007b",
             "&:hover": {
-              bgcolor: "white", // Background color on hover
-              color: "#ff007b",
+              bgcolor: "#8436a1", // Background color on hover
+              color: "white",
             },
           }}
           onClick={openDialog}

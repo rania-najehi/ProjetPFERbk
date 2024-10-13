@@ -63,7 +63,14 @@ body {
   font-size: 2rem;
   color: #ff007b; /* Secondary color for icons */
 }
-
+/* sx={{
+  fontSize: 15,
+  bgcolor: "#ff007b",
+  "&:hover": {
+    bgcolor: "#8436a1", // Background color on hover
+    color: "white",
+  },
+}} */
 .card-footer_dash {
   display: flex;
   justify-content: flex-end;
@@ -94,5 +101,5 @@ body {
 }
 
 .card-footer_dash button:hover {
-  background-color: #ff007b; /* Darker blue on hover */
+  background-color: #8436a1; /* Darker blue on hover */
 }

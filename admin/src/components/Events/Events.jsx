@@ -1,38 +1,50 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import EventCardList from './EventCardList.jsx';
-import EventModal from './EventModal.jsx';
-import { Button, Form } from 'react-bootstrap';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import EventCardList from "./EventCardList.jsx";
+import EventModal from "./EventModal.jsx";
+import { Button, Form } from "react-bootstrap";
+import { Pagination, Box } from "@mui/material";
 import "./events.css";
-
 const Events = () => {
+  const navigate = useNavigate();
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [events, setEvents] = useState([]);
   const [filteredEvents, setFilteredEvents] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [visibleEventId, setVisibleEventId] = useState(null); // New state for toggling details view
 
   const fetchEvents = async () => {
     try {
-      const response = await axios.get('http://127.0.0.1:4000/api/v1/event/events');
-      setEvents(response.data);
-      setFilteredEvents(response.data);
+      const response = await axios.get(
+        `http://127.0.0.1:4000/api/v1/event/events/${page}/3`
+      );
+      console.log("====================================");
+      console.log("data", response.data);
+      console.log("====================================");
+      setEvents(response.data.events);
+      setFilteredEvents(response.data.events);
+      setTotalPages(response.data.totalPages);
+      setPage(response.data.currentPage);
     } catch (error) {
-      console.error('Erreur lors de la récupération des événements', error);
+      console.error("Erreur lors de la récupération des événements", error);
     }
   };
 
   useEffect(() => {
     fetchEvents();
-  }, []);
+  }, [page]);
 
   const handleSearchChange = (e) => {
     const value = e.target.value.toLowerCase();
     setSearchTerm(value);
-    const filtered = events.filter(event =>
-      event.title.toLowerCase().includes(value) ||
-      event.category.toLowerCase().includes(value)
+    const filtered = events.filter(
+      (event) =>
+        event.title.toLowerCase().includes(value) ||
+        event.category.toLowerCase().includes(value)
     );
     setFilteredEvents(filtered);
   };
@@ -49,25 +61,43 @@ const Events = () => {
 
   const handleDelete = async (eventId) => {
     try {
-      await axios.delete(`http://127.0.0.1:4000/api/v1/event/events/${eventId}`);
+      await axios.delete(
+        `http://127.0.0.1:4000/api/v1/event/events/${eventId}`
+      );
       fetchEvents();
     } catch (error) {
-      console.error('Erreur lors de la suppression de l\'événement', error);
+      console.error("Erreur lors de la suppression de l'événement", error);
     }
   };
 
   const handleUpdate = async (updatedEvent) => {
     try {
-      await axios.put(`http://127.0.0.1:4000/api/v1/event/events/${updatedEvent._id}`, updatedEvent);
+      await axios.put(
+        `http://127.0.0.1:4000/api/v1/event/events/${updatedEvent._id}`,
+        updatedEvent
+      );
       fetchEvents();
       handleClose();
     } catch (error) {
-      console.error('Erreur lors de la mise à jour de l\'événement', error);
+      console.error("Erreur lors de la mise à jour de l'événement", error);
     }
+  };
+  const handleNavigate = (id) => {
+    navigate(`/events/${id}`);
+  };
+  const handlePageChange = (event, value) => {
+    setPage(value);
   };
 
   return (
-    <>
+    <Box
+      display={"flex"}
+      flexDirection={"column"}
+      justifyContent={"center"}
+      alignItems={"center"}
+      gap={1}
+      padding={1}
+    >
       <div className="event-controls">
         <div className="add-event-btn">
           <Button variant="primary" onClick={handleShow}>
@@ -103,10 +133,19 @@ const Events = () => {
         onDelete={handleDelete}
         onViewDetails={handleViewDetails}
         visibleEventId={visibleEventId} // Pass visibleEventId to the EventCardList
+        handleNavigate={handleNavigate}
         onUpdate={(event) => {
           setSelectedEvent(event);
           handleShow();
         }}
+      />
+      <Pagination
+        count={totalPages}
+        page={page}
+        onChange={handlePageChange}
+        variant="outlined"
+        shape="rounded"
+        className="pagination"
       />
       <EventModal
         show={showModal}
@@ -115,7 +154,7 @@ const Events = () => {
         event={selectedEvent}
         handleUpdate={handleUpdate}
       />
-    </>
+    </Box>
   );
 };
 

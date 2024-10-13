@@ -201,8 +201,8 @@ const StudentPreview = () => {
                     </span>
                     <br />
                     <span>
-                      Tech Stack: {project.techStack.languages.join(", ")},{" "}
-                      {project.techStack.backend.join(", ")},{" "}
+                      Tech Stack: {project?.techStack?.languages.join(", ")},{" "}
+                      {project?.techStack?.backend?.join(", ")},{" "}
                       {project.techStack.database.join(", ")},{" "}
                       {project.techStack.cloud.join(", ")}
                     </span>
@@ -222,7 +222,7 @@ const StudentPreview = () => {
               <p className="tags">
                 Technical Skills:
                 <br />
-                {skills.technicalSkills.map((techSkill) => (
+                {(skills?.technicalSkills || []).map((techSkill) => (
                   <span key={techSkill._id}>
                     {techSkill.skill} ({techSkill.level})
                   </span>
@@ -231,14 +231,14 @@ const StudentPreview = () => {
               <p className="tags">
                 Soft Skills:
                 <br />
-                {skills.softSkills.map((softSkill) => (
+                {[skills?.softSkills || []].map((softSkill) => (
                   <span key={softSkill._id}>{softSkill.skill}</span>
                 ))}
               </p>
               <p className="tags">
                 Languages:
                 <br />
-                {skills.languages.map((lang) => (
+                {[skills?.languages || []].map((lang) => (
                   <span key={lang._id}>
                     {lang.language} ({lang.proficiency})
                   </span>

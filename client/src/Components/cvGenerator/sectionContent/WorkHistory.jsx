@@ -116,7 +116,11 @@ const WorkHistory = () => {
       formData.positions.map((pos) => {
         delete pos._id;
       });
-      updateUserRecord({ records: formData.positions, section: "workHistory" });
+      updateUserRecord({
+        records: formData.positions,
+        section: "workHistory",
+        token: token,
+      });
     }
   };
 
@@ -303,13 +307,13 @@ const WorkHistory = () => {
         </Button>
         <Button
           variant="contained"
+          color="secondary"
           sx={{
-            ml: 2,
-            fontSize: 13,
+            fontSize: 15,
             bgcolor: "#ff007b",
             "&:hover": {
-              bgcolor: "white", // Background color on hover
-              color: "#ff007b",
+              bgcolor: "#8436a1", // Background color on hover
+              color: "white",
             },
           }}
           onClick={openDialog}

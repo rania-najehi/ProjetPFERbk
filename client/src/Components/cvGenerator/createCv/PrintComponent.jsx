@@ -260,7 +260,7 @@ const PdfDocument = ({ data, binaryImg }) => {
           <Text style={styles.sectionH3}>Skills</Text>
           <View>
             <Text style={styles.itemH4}>Technical Skills</Text>
-            {skills.technicalSkills.map((skill, index) => (
+            {(skills?.technicalSkills || []).map((skill, index) => (
               <View style={styles.skill} key={index}>
                 <Text style={styles.skillSpan}>{skill.skill}</Text>
                 <Text style={styles.skillSpan}>{skill.level}</Text>
@@ -269,7 +269,7 @@ const PdfDocument = ({ data, binaryImg }) => {
           </View>
           <View>
             <Text style={styles.itemH4}>Soft Skills</Text>
-            {skills.softSkills.map((skill, index) => (
+            {(skills?.softSkills || []).map((skill, index) => (
               <View style={styles.skill} key={index}>
                 <Text style={styles.skillSpan}>{skill.skill}</Text>
               </View>
@@ -277,7 +277,7 @@ const PdfDocument = ({ data, binaryImg }) => {
           </View>
           <View>
             <Text style={styles.itemH4}>Languages</Text>
-            {skills.languages.map((language, index) => (
+            {(skills?.language || []).map((language, index) => (
               <View style={styles.skill} key={index}>
                 <Text style={styles.skillSpan}>{language.language}</Text>
                 <Text style={styles.skillSpan}>{language.proficiency}</Text>

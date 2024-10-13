@@ -3,6 +3,31 @@
   margin: 0;
   font-family: "Roboto", sans-serif;
 } */
+.comments-container {
+  overflow-x: auto; /* Enable horizontal scrolling */
+  white-space: nowrap; /* Prevent wrapping */
+  padding-bottom: 20px; /* Add some bottom padding */
+}
+
+.comment-item {
+  display: inline-block; /* Make each comment an inline-block element */
+  margin-right: 20px; /* Add spacing between comments */
+  padding: 10px; /* Add padding to the comment */
+  border: 1px solid #ddd; /* Add a light border */
+  border-radius: 5px; /* Round the corners */
+  background-color: #fff; /* White background */
+  transition: transform 0.3s ease-in-out;
+}
+
+.comment-item:hover {
+  transform: translateX(-5px); /* Move slightly to the left on hover */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.comment-item img {
+  max-width: 100%; /* Make images responsive */
+  height: auto;
+}
 .event_container {
   padding: 4rem;
 }

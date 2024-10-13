@@ -29,6 +29,10 @@ import Event from "./Pages/Events.jsx";
 import "./App.css";
 import CvGenerator from "./Pages/CvGenerator.jsx";
 import HomeDashbaord from "./Pages/homeDashboard.jsx";
+import Chakala from "./Components/events/EventDetails.jsx";
+
+import ErrorBoundary from "./Components/errorsBoundries/errorBoundry.jsx";
+import Error from "./Pages/error.jsx";
 const App = () => {
   const { token, setToken } = useContext(Context);
   return (
@@ -37,6 +41,15 @@ const App = () => {
         <Scroller />
         <Navbar />
         <Routes>
+          {/* <Route
+          path="/detail/:eventId"
+          element={
+            <ErrorBoundary> 
+              <Event />
+            </ErrorBoundary>
+          }
+        /> */}
+
           <Route path="/dashboard" element={<DashboardStudent />}>
             <Route index element={<HomeDashbaord />} />
 
@@ -46,6 +59,7 @@ const App = () => {
 
             <Route path="/dashboard/cv" element={<CvGenerator />} />
             <Route path="/dashboard/preview" element={<StudentPreview />} />
+            <Route path="/dashboard/detail/:id" element={<Chakala />}></Route>
             <Route path="/dashboard/createCv" element={<CreateCv />} />
             <Route path="/dashboard/community" element={<Community />} />
 
@@ -71,3 +85,80 @@ const App = () => {
 };
 
 export default App;
+{
+  /* <>
+<Router>
+  <Scroller />
+  <Navbar />
+  <Routes>
+    <Route
+    path="/detail/:eventId"
+    element={
+      <ErrorBoundary> 
+        <Event />
+      </ErrorBoundary>
+    }
+  />
+
+    <Route
+      path="/dashboard"
+      element={token ? <DashboardStudent /> : <Login />}
+    >
+      <Route index element={token ? <HomeDashbaord /> : <Login />} />
+      <></>
+     
+      <Route
+        path="/dashboard/chat"
+        element={token ? <Chat /> : <Login />}
+      />
+      <Route
+        path="/dashboard/event"
+        element={token ? <Event /> : <Login />}
+      />
+
+      <Route
+        path="/dashboard/cv"
+        element={token ? <CvGenerator /> : <Login />}
+      />
+      <Route
+        path="/dashboard/preview"
+        element={token ? <StudentPreview /> : <Login />}
+      />
+      <Route
+        path="/dashboard/detail/:id"
+        element={token ? <Chakala /> : <Login />}
+      ></Route>
+      <Route
+        path="/dashboard/createCv"
+        element={token ? <CreateCv /> : <Login />}
+      />
+      <Route
+        path="/dashboard/community"
+        element={token ? <Community /> : <Login />}
+      />
+
+      <Route
+        path="/dashboard/jobOffer"
+        element={token ? <JobOffer /> : <Login />}
+      />
+    </Route>
+    <Route path="/" element={token ? <Home /> : <Login />} />
+
+    <Route path="/about" element={token ? <OurProgram /> : <Login />} />
+    <Route
+      path="/appointment"
+      element={token ? <Appointment /> : <Login />}
+    />
+    <Route path="/register" element={<Register />} />
+    <Route path="/login" element={<Login />} />
+
+    <Route path="/CV" element={<CVStudent />} />
+  </Routes>
+  <Routes>
+    <Route path="/dashboard/*" element={null} />
+    <Route path="*" element={<Footer />} />
+  </Routes>
+  <ToastContainer position="top-center" />
+</Router>
+</> */
+}

@@ -101,7 +101,11 @@ const Education = () => {
   const handleUpdate = () => {
     // Handle update logic
     console.log(educations);
-    updateUserRecord({ records: educations, section: "education" });
+    updateUserRecord({
+      records: educations,
+      section: "education",
+      token: token,
+    });
   };
 
   const educationLevels = [
@@ -216,7 +220,7 @@ const Education = () => {
       <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}>
         <Button
           variant="outlined"
-          sx={{ color: "#ff007b" }}
+          sx={{ color: "#8436a1" }}
           onClick={handleAddEducation}
           startIcon={<AddIcon />}
         >
@@ -224,13 +228,13 @@ const Education = () => {
         </Button>
         <Button
           variant="contained"
+          color="secondary"
           sx={{
-            ml: 2,
-            fontSize: 13,
+            fontSize: 15,
             bgcolor: "#ff007b",
             "&:hover": {
-              bgcolor: "white", // Background color on hover
-              color: "#ff007b",
+              bgcolor: "#8436a1", // Background color on hover
+              color: "white",
             },
           }}
           onClick={openDialog}
