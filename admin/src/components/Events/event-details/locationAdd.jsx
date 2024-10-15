@@ -15,7 +15,7 @@ const LocationAdd = ({ onLocationChange }) => {
   useEffect(() => {
     // Initialize the map
     if (map.current) return; // Initialize map only once
-
+    console.log("hello");
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: "mapbox://styles/mapbox/streets-v11",
